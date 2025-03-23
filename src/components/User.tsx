@@ -1,4 +1,3 @@
-import React from "react";
 import { styles } from "../constants/styles";
 import { useTheme } from "../contexts/ThemeContext";
 
