@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { TPrivateDonationFormData, TDonationMessages, TDonationAmountOptionsProps, TFormErrors, TDonationMessageGenerator } from "../../types/types";

@@ -4,7 +4,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { Hero2Content } from "../constants/contents";
 import { styles } from "../constants/styles";
 
-export default function Hero2() {
+export function Hero2() {
   return (
     <div className={styles.hero2.container}>
       <div className={styles.hero2.shadowContainer}>
