@@ -8,7 +8,7 @@ module.exports = {
               loader: 'file-loader',
               options: {
                 name: '[path][name].[ext]',
-                publicPath: '/assets/', // Updated publicPath to include leading slash
+                publicPath: '/assets/',
               },
             },
           ],
