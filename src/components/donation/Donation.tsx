@@ -3,13 +3,15 @@ import PrivateDonationForm from "./PrivateDonationForm";
 import CompanyDonationForm from "./CompanyDonationForm";
 import hero1 from "/Users/lucaseduardo/gambia/client/src/assets/img_donation.jpeg";
 import { TPrivateDonationFormData, TCompanyDonationFormData } from "../../types/types";
-import { styles } from "../../constants/styles";
 import { DonationContent } from "../../constants/contents";
+import { useTheme } from "../../contexts/ThemeContext";
+import { styles } from "../../constants/styles";
+
 type TDonationFormData = TPrivateDonationFormData & TCompanyDonationFormData;
 
-
 export default function Donation() {
-  const [donationType, setDonationType] = useState("privat-person");
+  const [donationType, setDonationType] = useState("private");
+  const { theme } = useTheme();
   const [formData, setFormData] = useState<TDonationFormData>({
     fullName: "",
     email: "",
@@ -30,10 +32,10 @@ export default function Donation() {
   };
 
   return (
-    <div className={styles.donation.container}>
-            <img src={hero1} alt="hero" className={styles.donation.image} />
+    <div className={` ${styles.donation.container}`}>
+      <img src={hero1} alt="hero" className={styles.donation.image} />
 
-      <div className={styles.donation.contentContainer}>
+      <div className={  `${styles.donation.contentContainer} ${theme.background}`}>
         <h1 className={styles.donation.title}>
           {DonationContent.title}
         </h1>
@@ -45,35 +47,35 @@ export default function Donation() {
             <h1 className="text-xs p-2">Donate as:</h1>
             <input
               type="radio"
-              id="privat-person"
+              id="private-person"
               name="donation"
-              value="privat-person"
+              value="private"
               onChange={handleDonationTypeChange}
               defaultChecked
               className=""
             />
-            <label htmlFor="privat-person" className={styles.donation.radioLabel}>
-              {DonationContent.privatePersonLabel}
+            <label htmlFor="private-person" className={styles.donation.radioLabel}>
+              Private Person
             </label>
             <input
               type="radio"
-              id="foretag"
+              id="company"
               name="donation"
-              value="foretag"
+              value="company"
               onChange={handleDonationTypeChange}
               className=""
             />
-            <label htmlFor="foretag" className={styles.donation.radioLabel}>
-              {DonationContent.companyLabel}
+            <label htmlFor="company" className={styles.donation.radioLabel}>
+              Company
             </label>
           </div>
-          {donationType === "privat-person" && (
+          {donationType === "private" && (
             <PrivateDonationForm
               formData={formData as TPrivateDonationFormData}
               setFormData={setFormData as React.Dispatch<React.SetStateAction<TPrivateDonationFormData>>}
             />
           )}
-          {donationType === "foretag" && (
+          {donationType === "company" && (
             <CompanyDonationForm
               formData={formData as TCompanyDonationFormData}
               setFormData={setFormData as React.Dispatch<React.SetStateAction<TCompanyDonationFormData>>}

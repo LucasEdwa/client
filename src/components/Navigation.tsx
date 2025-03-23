@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { NavbarContent } from "../constants/contents";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from '../contexts/ThemeContext';
 import { Link } from "react-router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { styles } from "../constants/styles";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,27 +16,27 @@ export function Navigation() {
   };
 
   return (
-    <nav className={theme.nav.container}>
-      <div className={theme.nav.themeButtonContainer}>
+    <nav className={`${styles.nav.container} ${theme.background} ${theme.text}`}>
+      <div className={styles.nav.themeButtonContainer}>
         <button
           onClick={toggleTheme}
-          className={theme.nav.themeButton}
+          className={styles.nav.themeButton}
         >
           <FontAwesomeIcon icon={currentTheme === 'primary' ? faSun : faMoon} />
         </button>
       </div>
-      <div className={theme.nav.holder}>
-        <Link to="/" className={theme.nav.brandLink}>For all in Gambia</Link>
+      <div className={styles.nav.holder}>
+        <Link to="/" className={styles.nav.brandLink}>For all in Gambia</Link>
         <button
-          className={`${theme.nav.menuButton} ${isMenuOpen ? "hidden" : "block"}`}
+          className={`${styles.nav.menuButton} ${isMenuOpen ? "hidden" : "block"}`}
           onClick={() => setIsMenuOpen(true)}
         >
           <FontAwesomeIcon icon={faBars} />
         </button>
       </div>
-      <div className={`${isMenuOpen ? "translate-x-0" : "-translate-x-full"} ${theme.nav.sideMenu}`}>
+      <div className={`${isMenuOpen ? "translate-x-0" : "-translate-x-full"} ${styles.nav.sideMenu} ${theme.background}`}>
         <button
-          className={theme.nav.closeButton}
+          className={styles.nav.closeButton}
           onClick={() => setIsMenuOpen(false)}
         >
           <FontAwesomeIcon icon={faTimes} />
@@ -46,21 +47,21 @@ export function Navigation() {
             item.dropdownItems ? (
               <div key={item.id} className="relative">
                 <button
-                  className={theme.button}
+                  className={styles.nav.link}
                   onClick={() => handleProjectDropdownToggle(item.id)}
                 >
                   {item.title}
                 </button>
-                <div className={`${openProjectDropdown === item.id ? "block" : "hidden"} ${theme.nav.dropdownItems}`}>
+                <div className={`${openProjectDropdown === item.id ? "block" : "hidden"} ${styles.nav.dropdownItems}`}>
                   {item.dropdownItems.map((dropdownItem) => (
-                    <a key={dropdownItem.id} href={dropdownItem.link} className={theme.nav.dropdownItem}>
+                    <a key={dropdownItem.id} href={dropdownItem.link} className={styles.nav.dropdownItem}>
                       {dropdownItem.title}
                     </a>
                   ))}
                 </div>
               </div>
             ) : (
-              <a key={item.id} className={theme.nav.link} href={item.link}>
+              <a key={item.id} className={styles.nav.link} href={item.link}>
                 {item.title}
               </a>
             )

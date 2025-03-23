@@ -6,7 +6,7 @@ export const Projects = () => {
     return (
         <div className="projects">
             <div className="container">
-                <h2>Our Projects</h2>
+                <h2 className="text-center text-2xl font-bold">Our Projects</h2>
                 <div className="flex flex-wrap justify-center gap-4">
                     {ProjectsContent.map((project ) => (
                         <div className="w-[300px] p-4" key={project.id}>

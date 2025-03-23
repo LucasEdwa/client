@@ -1,8 +1,10 @@
+import { useTheme } from "../contexts/ThemeContext";
 import { styles } from "../constants/styles";
 
 export default function Footer() {
+  const { theme } = useTheme();
   return (
-    <footer className={styles.footer.container}>
+    <footer className={`${styles.footer.container} ${theme.background} ${theme.text}`}>
       <div className={styles.footer.content}>
         <div className={styles.footer.section}>
           <h2 className={styles.footer.heading}>About Us</h2>

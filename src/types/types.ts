@@ -102,3 +102,93 @@ export type TDonationContent = {
   privatePersonLabel: string;
   companyLabel: string;
 };
+export type TContact = {
+  description: string;
+  phone: string;
+  address: string;
+  options: Array<string>;
+};
+
+export type TAuthPage = {
+  title: string;
+  subtitle: string;
+  loginTab: string;
+  registerTab: string;
+  forgotPasswordText: string;
+  socialLogin: {
+    googleText: string;
+    facebookText: string;
+  };
+  formLabels: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    name: string;
+  };
+  buttons: {
+    login: string;
+    register: string;
+    forgotPassword: string;
+  };
+};
+
+export type TPartner = {
+  name: string;
+  logo: string;
+};
+
+export type TPartnersContent = {
+  title: string;
+  description: string;
+  partners: TPartner[];
+};
+
+export type TGoal = {
+  title: string;
+  description: string;
+  type: 'nature' | 'housing' | 'welfare' | 'context';
+};
+
+export type TAboutContent = {
+  mainTitle: string;
+  goals: {
+    natureConservation: TGoal;
+    affordableHousing: TGoal;
+    communityWelfare: TGoal;
+    context: TGoal;
+  };
+};
+
+export type TShopItem = {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+  description?: string;
+};
+
+export type TGiftShoppingContent = {
+  title: string;
+  description: string;
+  itemsPerPage: number;
+  totalItems: number;
+  items: TShopItem[];
+};
+export type TUser = {
+  id: number;
+  fullname?: string;
+  email: string;
+  password: string;
+  mobileNumber?: string;
+  checkedForTaxReduction?: boolean;
+  personalNumber?: string;
+  companyRegistrationNumber?: string;
+  companyEmail?: string;
+  companyFirstName?: string;
+  companyLastName?: string;
+  companyMobileNumber?: string;
+  donationAmount?: number | string;
+  signatureType?: string;
+};

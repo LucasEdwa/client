@@ -22,7 +22,7 @@ const donationMessages: TDonationMessages = {
     "400",
     "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"
   ),
-  VALFRITT: generateDonationMessage("optional", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
+  "OPTIONAL": generateDonationMessage("optional", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
 };
 
 const DonationAmountOptions = ({
@@ -30,7 +30,7 @@ const DonationAmountOptions = ({
   handleDonationAmountClick,
 }: TDonationAmountOptionsProps) => (
   <div className="flex gap-1 mt-1 w-full ">
-    {["100 KR", "200 KR", "400 KR", "VALFRITT"].map((amount) => (
+    {["100 KR", "200 KR", "400 KR", "OPTIONAL"].map((amount) => (
       <input
         key={amount}
         type="button"
@@ -88,20 +88,16 @@ export default function PrivateDonationForm({
       setFormErrors(errors);
     } else {
       const numericDonationAmount =
-        donationAmount === "VALFRITT"
+        donationAmount === "OPTIONAL"
           ? customDonationAmount || "0"
           : parseInt(donationAmount.replace(" KR", ""), 10);
-      setFormData({
-        ...formData,
-        donationAmount: numericDonationAmount,
-        signatureType,
-      });
+
       navigate("/payment", {
         state: {
           ...formData,
           donationAmount: numericDonationAmount,
           signatureType,
-          donationType: "private-person",
+          donationType: "private",
         },
       });
     }
@@ -113,7 +109,7 @@ export default function PrivateDonationForm({
 
   const handleDonationAmountClick = (amount: string) => {
     setDonationAmount(amount);
-    if (amount === "VALFRITT") {
+    if (amount === "OPTIONAL") {
       setCustomDonationAmount("");
     }
   };
@@ -157,7 +153,7 @@ export default function PrivateDonationForm({
           {donationMessages[donationAmount] && (
             <div className={styles.privateDonationForm.donationMessageContainer}>
               <p className="mt-4">{donationMessages[donationAmount]}</p>
-              {donationAmount === "VALFRITT" && (
+              {donationAmount === "OPTIONAL" && (
                 <div className="mt-4">
                   <input
                     className={styles.privateDonationForm.customDonationInput}

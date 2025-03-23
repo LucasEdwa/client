@@ -11,7 +11,7 @@ const generateDonationMessage = (amount: string, amountMessage: string) =>
 const donationMessages: TDonationMessages = {
   "10000 KR": generateDonationMessage("10000", "support mothers in Gambia by providing 10-15 reusable diapers, a sustainable option for low-income families"),
   "40000 KR": generateDonationMessage("40000", "supply a mother with approximately 800g of milk powder, along with a baby bottle to support infant nutrition"),
-  VALFRITT: generateDonationMessage("valfria", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
+  "OPTIONAL": generateDonationMessage("optional", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
 };
 
 export default function CompanyDonationForm({
@@ -26,7 +26,6 @@ export default function CompanyDonationForm({
   const [customDonationAmount, setCustomDonationAmount] = useState("");
   const [formErrors, setFormErrors] = useState<TFormErrors>({});
   const navigate = useNavigate();
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -57,20 +56,19 @@ export default function CompanyDonationForm({
       setFormErrors(errors);
     } else {
       const numericDonationAmount =
-        donationAmount === "VALFRITT"
+        donationAmount === "OPTIONAL"
           ? customDonationAmount || "0"
           : parseInt(donationAmount.replace(" KR", ""), 10);
-      setFormData({
-        ...formData,
-        donationAmount: numericDonationAmount,
-        signatureType,
-      });
 
       navigate("/payment", {
         state: {
           ...formData,
           donationAmount: numericDonationAmount,
           signatureType,
+          donationType: "company",
+          email: formData.companyEmail,
+          fullName: `${formData.companyFirstName} ${formData.companyLastName}`,
+          mobileNumber: formData.companyMobileNumber
         },
       });
     }
@@ -82,7 +80,7 @@ export default function CompanyDonationForm({
 
   const handleDonationAmountClick = (amount: string) => {
     setDonationAmount(amount);
-    if (amount === "VALFRITT") {
+    if (amount === "OPTIONAL") {
       setCustomDonationAmount("");
     }
   };
@@ -111,7 +109,7 @@ export default function CompanyDonationForm({
             />
           </div>
           <div className="flex gap-1 mt-4">
-            {["10000 KR", "40000 KR", "VALFRITT"].map((amount) => (
+            {["10000 KR", "40000 KR", "OPTIONAL"].map((amount) => (
               <input
                 className={`${styles.companyDonationForm.button} ${
                   donationAmount === amount ? styles.companyDonationForm.activeButton : "bg-transparent"
@@ -126,7 +124,7 @@ export default function CompanyDonationForm({
           {donationMessages[donationAmount] && (
             <div className={styles.companyDonationForm.donationMessageContainer}>
               <p className="mt-4">{donationMessages[donationAmount]}</p>
-              {donationAmount === "VALFRITT" && (
+              {donationAmount === "OPTIONAL" && (
                 <div className="mt-4">
                   <input
                     className={styles.companyDonationForm.customDonationInput}
@@ -140,7 +138,7 @@ export default function CompanyDonationForm({
           )}
           <div >
             <label htmlFor="companyRegistrationNumber">
-              Organizationsnummer*
+              Organization Number*
             </label>
             <div className="flex space-x-2">
               <input
@@ -182,7 +180,7 @@ export default function CompanyDonationForm({
               />
             </div>
             <div className={styles.companyDonationForm.customInputHolder}>
-              <label htmlFor="companyLastName">Efternamn*</label>
+              <label htmlFor="companyLastName">Last Name*</label>
               <input
                 type="text"
                 name="companyLastName"
@@ -192,7 +190,7 @@ export default function CompanyDonationForm({
               />
             </div>
             <div className={styles.companyDonationForm.customInputHolder}>
-              <label htmlFor="companyMobileNumber">Mobil *</label>
+              <label htmlFor="companyMobileNumber">Mobile*</label>
               <input
                 type="text"
                 name="companyMobileNumber"
