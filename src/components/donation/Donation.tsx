@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PrivateDonationForm from "./PrivateDonationForm";
 import CompanyDonationForm from "./CompanyDonationForm";
-import hero1 from "../../assets/img_donation.jpeg"; // Use a relative path
+import hero1 from "../../assets/img_donation.jpeg"; // Ensure the path is correct
 import { TPrivateDonationFormData, TCompanyDonationFormData } from "../../types/types";
 import { DonationContent } from "../../constants/contents";
 import { useTheme } from "../../contexts/ThemeContext";
