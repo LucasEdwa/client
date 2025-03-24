@@ -34,8 +34,8 @@ const DonationAmountOptions = ({
       <input
         key={amount}
         type="button"
-        className={`p-2 border-2 text-center w-full cursor-pointer  ${
-          donationAmount === amount ? "bg-blue-700 " : "bg-transparent"
+        className={`p-2 border-1 text-center w-full cursor-pointer ${
+          donationAmount === amount ? styles.privateDonationForm.activeButton : "bg-transparent"
         }`}
         value={amount}
         onClick={() => handleDonationAmountClick(amount)}

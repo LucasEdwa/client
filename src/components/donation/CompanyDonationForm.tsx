@@ -95,7 +95,7 @@ export default function CompanyDonationForm({
         onSubmit={handleFormSubmit}
         className={styles.companyDonationForm.formContainer}
       >
-        <div className="space-y-5">
+        <div className="">
           <div className={styles.companyDonationForm.buttonContainer}>
             <input
               type="button"
@@ -123,7 +123,7 @@ export default function CompanyDonationForm({
           </div>
           {donationMessages[donationAmount] && (
             <div className={styles.companyDonationForm.donationMessageContainer}>
-              <p className="mt-4">{donationMessages[donationAmount]}</p>
+              <p className="">{donationMessages[donationAmount]}</p>
               {donationAmount === "OPTIONAL" && (
                 <div className="mt-4">
                   <input
