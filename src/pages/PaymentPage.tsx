@@ -162,7 +162,6 @@ function PaymentPage() {
 
   return (
     <div className={styles.paymentStyles.container}>
-      {/* Common information */}
       <div className={styles.paymentStyles.summary.container}>
         <h2 className={styles.paymentStyles.summary.title}>Donation Summary</h2>
         <p className={styles.paymentStyles.summary.text}>Donation as: {locationState.donationType}</p>
@@ -170,27 +169,27 @@ function PaymentPage() {
         <p className={styles.paymentStyles.summary.text}>Donation Amount: {locationState.donationAmount} kr</p>
         
         {locationState.donationType === "private" && (
-          <>
+          <div className={styles.paymentStyles.summary.privateInfo}>
             <p className={styles.paymentStyles.summary.text}>Fullname: {locationState.fullName}</p>
             <p className={styles.paymentStyles.summary.text}>Email: {locationState.email}</p>
             <p className={styles.paymentStyles.summary.text}>Mobile: {locationState.mobileNumber}</p>
             {locationState.personalNumber && (
               <p className={styles.paymentStyles.summary.text}>PersonalNumber: {locationState.personalNumber}</p>
             )}
-          </>
+          </div>
         )}
 
         {locationState.donationType === "company" && (
-          <>
+          <div className={styles.paymentStyles.summary.companyInfo}>
             <p className={styles.paymentStyles.summary.text}>Company Contact: {locationState.fullName}</p>
             <p className={styles.paymentStyles.summary.text}>Company Email: {locationState.companyEmail}</p>
             <p className={styles.paymentStyles.summary.text}>Company Phone: {locationState.companyMobileNumber}</p>
             <p className={styles.paymentStyles.summary.text}>Registration Number: {locationState.companyRegistrationNumber}</p>
-          </>
+          </div>
         )}
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.paymentStyles.form.form}>
         <div className={styles.paymentStyles.form.methodLabel}>
           <div className={styles.paymentStyles.form.radioText}>
             <input
@@ -202,7 +201,7 @@ function PaymentPage() {
             />
             <span>Swish</span>
           </div>
-          <div>
+          <div className={styles.paymentStyles.form.logoWrapper}>
             <img src={swishLogo} alt="Swish logo" className={styles.paymentStyles.form.logo} />
           </div>
         </div>
@@ -236,7 +235,7 @@ function PaymentPage() {
               pattern="[0-9+()-\s]*"
             />
             {showQRCode && (
-              <div className="mt-4 flex flex-col items-center">
+              <div className={styles.paymentStyles.form.qrCodeContainer}>
                 <QRCodeSVG 
                   value={`swish://payment?data=${encodeURIComponent(JSON.stringify({
                     version: 1,
@@ -246,7 +245,7 @@ function PaymentPage() {
                   }))}`}
                   size={256}
                 />
-                <p className="mt-2 text-sm text-gray-600">
+                <p className={styles.paymentStyles.form.qrCodeText}>
                   Scan this QR code with your Swish app to complete the payment
                 </p>
               </div>
@@ -257,7 +256,7 @@ function PaymentPage() {
         {paymentMethod === "card" && (
           <div className={styles.paymentStyles.form.cardContainer}>
             <CardElement options={{ style: { base: { fontSize: "18px", backgroundColor: "white" } } }} />
-            <div className="mt-2">
+            <div className={styles.paymentStyles.form.rememberCardContainer}>
               <label className={styles.paymentStyles.form.radioText}>
                 <input type="checkbox" className={styles.paymentStyles.form.radio} /> Remember my card
               </label>

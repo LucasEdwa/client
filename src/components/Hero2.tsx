@@ -10,8 +10,8 @@ export function Hero2() {
       <div className={styles.hero2.shadowContainer}>
         <div className={styles.hero2.textContainer}>
           <div className={styles.hero2.newsContainer}>
-            <div className="lg:p-4 xs:p-2">
-              <h1 className="lg:text-lg xs:text-sm">News: </h1>
+            <div className={styles.hero2.newsTitleContainer}>
+              <h1 className={styles.hero2.newsTitle}>News: </h1>
             </div>
             {Hero2Content.news.map((item, index) => (
               <div key={index} className={styles.hero2.newsItem}>
@@ -28,7 +28,7 @@ export function Hero2() {
         </div>
       </div>
       <div className={styles.hero2.imageContainer}>
-        <div>
+        <div className={styles.hero2.imageWrapper}>
           <img
             className={styles.hero2.image}
             src={Hero2Content.image}
@@ -36,7 +36,7 @@ export function Hero2() {
           />
         </div>
         <div className={styles.hero2.contentContainer}>
-          <div>
+          <div className={styles.hero2.contentWrapper}>
             <h1 className={styles.hero2.heading1}>
               {Hero2Content.content.heading1}
             </h1>

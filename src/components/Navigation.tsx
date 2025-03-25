@@ -42,10 +42,10 @@ export function Navigation() {
           <FontAwesomeIcon icon={faTimes} />
         </button>
         <h1 className={`${theme.text} text-2xl`}>For all Gambia</h1>
-        <div className="flex flex-col gap-6 mt-2">
+        <div className={styles.nav.mobileLinks}>
           {NavbarContent.map((item) => (
             item.dropdownItems ? (
-              <div key={item.id} className="relative">
+              <div key={item.id} className={styles.nav.dropdownItems}>
                 <button
                   className={styles.nav.link}
                   onClick={() => handleProjectDropdownToggle(item.id)}

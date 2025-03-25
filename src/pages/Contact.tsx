@@ -3,8 +3,8 @@ import { styles } from "../constants/styles";
 
 export default function ContactPage() {
   return (
-    <>
-      <section>
+    <div className={styles.contactStyles.pageWrapper}>
+      <section className={styles.contactStyles.section}>
         <div className={styles.contactStyles.container}>
           <div className={styles.contactStyles.grid}>
             <div className={styles.contactStyles.infoSection}>
@@ -12,7 +12,7 @@ export default function ContactPage() {
                 {contactContent.description}
               </p>
 
-              <div className="mt-8">
+              <div className={styles.contactStyles.contactInfoWrapper}>
                 <a href="#" className={styles.contactStyles.phoneLink}>
                   {contactContent.phone}
                 </a>
@@ -25,8 +25,8 @@ export default function ContactPage() {
 
             <div className={styles.contactStyles.formSection}>
               <form action="#" className={styles.contactStyles.form}>
-                <div>
-                  <label className="sr-only" htmlFor="name">Name</label>
+                <div className={styles.contactStyles.inputWrapper}>
+                  <label className={styles.contactStyles.srOnly} htmlFor="name">Name</label>
                   <input
                     className={styles.contactStyles.input}
                     placeholder="Name"
@@ -36,8 +36,8 @@ export default function ContactPage() {
                 </div>
 
                 <div className={styles.contactStyles.inputGrid}>
-                  <div>
-                    <label className="sr-only" htmlFor="email">Email</label>
+                  <div className={styles.contactStyles.inputWrapper}>
+                    <label className={styles.contactStyles.srOnly} htmlFor="email">Email</label>
                     <input
                       className={styles.contactStyles.input}
                       placeholder="Email address"
@@ -46,8 +46,8 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <div>
-                    <label className="sr-only" htmlFor="phone">Phone</label>
+                  <div className={styles.contactStyles.inputWrapper}>
+                    <label className={styles.contactStyles.srOnly} htmlFor="phone">Phone</label>
                     <input
                       className={styles.contactStyles.input}
                       placeholder="Phone Number"
@@ -59,27 +59,27 @@ export default function ContactPage() {
 
                 <div className={styles.contactStyles.optionsGrid}>
                   {contactContent.options.map((option, index) => (
-                    <div key={`Option${index + 1}`}>
+                    <div key={`Option${index + 1}`} className={styles.contactStyles.optionWrapper}>
                       <label
                         htmlFor={`Option${index + 1}`}
                         className={styles.contactStyles.radioLabel}
                         tabIndex={0}
                       >
                         <input
-                          className="sr-only"
+                          className={styles.contactStyles.srOnly}
                           id={`Option${index + 1}`}
                           type="radio"
                           tabIndex={-1}
                           name="option"
                         />
-                        <span className="text-sm">{option}</span>
+                        <span className={styles.contactStyles.optionText}>{option}</span>
                       </label>
                     </div>
                   ))}
                 </div>
 
-                <div>
-                  <label className="sr-only" htmlFor="message">Message</label>
+                <div className={styles.contactStyles.inputWrapper}>
+                  <label className={styles.contactStyles.srOnly} htmlFor="message">Message</label>
                   <textarea
                     className={styles.contactStyles.input}
                     placeholder="Message"
@@ -88,7 +88,7 @@ export default function ContactPage() {
                   ></textarea>
                 </div>
 
-                <div className="mt-4">
+                <div className={styles.contactStyles.buttonWrapper}>
                   <button type="submit" className={styles.contactStyles.submitButton}>
                     Send Enquiry
                   </button>
@@ -98,6 +98,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

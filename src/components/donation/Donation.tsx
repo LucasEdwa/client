@@ -44,7 +44,7 @@ export default function Donation() {
         </p>
         <div className={styles.donation.formContainer}>
           <div className={styles.donation.radioGroup}>
-            <h1 className="text-sm p-2">Donate as:</h1>
+            <h1 className="text-xs p-2">Donate as:</h1>
             <input
               type="radio"
               id="private-person"
@@ -52,7 +52,7 @@ export default function Donation() {
               value="private"
               onChange={handleDonationTypeChange}
               defaultChecked
-              className=""
+              className="text-xs"
             />
             <label htmlFor="private-person" className={styles.donation.radioLabel}>
               Private Person

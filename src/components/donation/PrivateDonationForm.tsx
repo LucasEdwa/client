@@ -3,46 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { TPrivateDonationFormData, TDonationMessages, TDonationAmountOptionsProps, TFormErrors, TDonationMessageGenerator } from "../../types/types";
+import { TPrivateDonationFormData, TFormErrors } from "../../types/types";
 import { styles } from "../../constants/styles";
-
-const generateDonationMessage: TDonationMessageGenerator = (amount, amountMessage) =>
-  `Every month your ${amount} kr ${amountMessage}. As a World Parent, you are helping to give everyone in Gambia hope to continue.`;
-
-const donationMessages: TDonationMessages = {
-  "100 KR": generateDonationMessage(
-    "100",
-    "support mothers in Gambia by providing 10-15 reusable diapers, a sustainable option for low-income families"
-  ),
-  "200 KR": generateDonationMessage(
-    "200",
-    "supply a mother with approximately 800g of milk powder, along with a baby bottle to support infant nutrition"
-  ),
-  "400 KR": generateDonationMessage(
-    "400",
-    "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"
-  ),
-  "OPTIONAL": generateDonationMessage("optional", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
-};
-
-const DonationAmountOptions = ({
-  donationAmount,
-  handleDonationAmountClick,
-}: TDonationAmountOptionsProps) => (
-  <div className="flex gap-1 mt-1 w-full ">
-    {["100 KR", "200 KR", "400 KR", "OPTIONAL"].map((amount) => (
-      <input
-        key={amount}
-        type="button"
-        className={`p-2 border-1 text-center w-full cursor-pointer ${
-          donationAmount === amount ? styles.privateDonationForm.activeButton : "bg-transparent"
-        }`}
-        value={amount}
-        onClick={() => handleDonationAmountClick(amount)}
-      />
-    ))}
-  </div>
-);
+import { donationMessages } from "../../constants/donationMessages";
+import DonationAmountOptions from "../../hooks/DonationAmountOptions";
 
 export default function PrivateDonationForm({
   formData,
@@ -115,12 +79,12 @@ export default function PrivateDonationForm({
   };
 
   return (
-    <div>
+    <div className={styles.privateDonationForm.formWrapper}>
       <form
         onSubmit={handleFormSubmit}
         className={styles.privateDonationForm.formContainer}
       >
-        <div className="">
+        <div className={styles.privateDonationForm.formContent}>
           <div className={styles.privateDonationForm.buttonContainer}>
             <input
               type="button"
@@ -152,12 +116,14 @@ export default function PrivateDonationForm({
           )}
           {donationMessages[donationAmount] && (
             <div className={styles.privateDonationForm.donationMessageContainer}>
-              <p className="mt-4">{donationMessages[donationAmount]}</p>
+              <p className={styles.privateDonationForm.donationMessageWrapper}>
+                {donationMessages[donationAmount]}
+              </p>
               {donationAmount === "OPTIONAL" && (
-                <div className="mt-4">
+                <div className={styles.privateDonationForm.customDonationWrapper}>
                   <input
                     className={styles.privateDonationForm.customDonationInput}
-                    type="text"
+                    type="number"
                     placeholder="Enter optional amount"
                     onChange={(e) => setCustomDonationAmount(e.target.value)}
                   />
@@ -185,7 +151,7 @@ export default function PrivateDonationForm({
           />
           <p>We would like to thank you!</p>
           <input
-            type="text"
+            type="number"
             name="mobileNumber"
             placeholder="Mobile Number*"
             value={formData.mobileNumber}
@@ -216,7 +182,7 @@ export default function PrivateDonationForm({
                 id="tax-reduction"
                 onChange={handleCheckboxChange}
               />
-              <label>I want tax reduction (not required)</label>
+              <label className="text-xs">I want tax reduction (not required)</label>
             </div>
             <FontAwesomeIcon
               icon={faInfoCircle}
@@ -232,18 +198,20 @@ export default function PrivateDonationForm({
             />
           </div>
           {formData.checkedForTaxReduction && (
-            <div>
-              <p>
+            <div className={styles.privateDonationForm.taxReductionWrapper}>
+              <p className={styles.privateDonationForm.taxReductionMessage}>
                 Thank you for choosing to support us! To send you the tax reduction, we need your personal number.
               </p>
-              <input
-                type="text"
-                name="personalNumber"
-                placeholder="Personal Number"
-                value={formData.personalNumber}
-                onChange={handleInputChange}
-                className={styles.privateDonationForm.personalNumberContainer}
-              />
+              <div className={styles.privateDonationForm.taxReductionInputWrapper}>
+                <input
+                  type="number"
+                  name="personalNumber"
+                  placeholder="Personal Number"
+                  value={formData.personalNumber}
+                  onChange={handleInputChange}
+                  className={styles.privateDonationForm.personalNumberContainer}
+                />
+              </div>
             </div>
           )}
         </div>

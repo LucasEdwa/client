@@ -1,12 +1,12 @@
 import { AboutContent } from "../constants/contents";
-import { styles }  from "../constants/styles";
+import { styles } from "../constants/styles";
 
 export default function About() {
   return (
     <div className={styles.aboutStyles.container}>
-      <h1 className="text-2xl font-bold py-4">{AboutContent.mainTitle}</h1>
-      <div className="container p-4 sm:grid-cols-2">
-        <div className="lg:grid lg:grid-cols-2 flex flex-col gap-4">
+      <h1 className={styles.aboutStyles.mainTitle}>{AboutContent.mainTitle}</h1>
+      <div className={styles.aboutStyles.contentContainer}>
+        <div className={styles.aboutStyles.goalsGrid}>
           {Object.entries(AboutContent.goals).map(([key, goal]) => (
             <div key={key} className={styles.aboutStyles.goalCard}>
               <h2 className={styles.aboutStyles.title}>{goal.title}</h2>

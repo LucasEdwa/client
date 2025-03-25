@@ -2,17 +2,10 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
-import { TCompanyDonationFormData, TDonationMessages, TFormErrors } from "../../types/types";
+import { TCompanyDonationFormData, TFormErrors } from "../../types/types";
 import { styles } from "../../constants/styles";
-
-const generateDonationMessage = (amount: string, amountMessage: string) =>
-  `Every month your ${amount} kr ${amountMessage}. As donor you give hopp to Gambias communite to continue healing and growing to a better place on earth.`;
-
-const donationMessages: TDonationMessages = {
-  "10000 KR": generateDonationMessage("10000", "support mothers in Gambia by providing 10-15 reusable diapers, a sustainable option for low-income families"),
-  "40000 KR": generateDonationMessage("40000", "supply a mother with approximately 800g of milk powder, along with a baby bottle to support infant nutrition"),
-  "OPTIONAL": generateDonationMessage("optional", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
-};
+import { companyDonationMessages } from "../../constants/donationMessages";
+import CompanyDonationAmountOptions from "../../hooks/CompanyDonationAmountOptions";
 
 export default function CompanyDonationForm({
   formData,
@@ -90,12 +83,12 @@ export default function CompanyDonationForm({
   };
 
   return (
-    <div>
+    <div className={styles.companyDonationForm.formWrapper}>
       <form
         onSubmit={handleFormSubmit}
         className={styles.companyDonationForm.formContainer}
       >
-        <div className="">
+        <div className={styles.companyDonationForm.formContent}>
           <div className={styles.companyDonationForm.buttonContainer}>
             <input
               type="button"
@@ -108,27 +101,20 @@ export default function CompanyDonationForm({
               onClick={() => handleButtonClick("ge-en-gava")}
             />
           </div>
-          <div className="flex gap-1 mt-4">
-            {["10000 KR", "40000 KR", "OPTIONAL"].map((amount) => (
-              <input
-                className={`${styles.companyDonationForm.button} ${
-                  donationAmount === amount ? styles.companyDonationForm.activeButton : "bg-transparent"
-                }`}
-                key={amount}
-                type="button"
-                value={amount}
-                onClick={() => handleDonationAmountClick(amount)}
-              />
-            ))}
-          </div>
-          {donationMessages[donationAmount] && (
+          <CompanyDonationAmountOptions
+            donationAmount={donationAmount}
+            handleDonationAmountClick={handleDonationAmountClick}
+          />
+          {companyDonationMessages[donationAmount] && (
             <div className={styles.companyDonationForm.donationMessageContainer}>
-              <p className="">{donationMessages[donationAmount]}</p>
+              <p className={styles.companyDonationForm.donationMessageWrapper}>
+                {companyDonationMessages[donationAmount]}
+              </p>
               {donationAmount === "OPTIONAL" && (
-                <div className="mt-4">
+                <div className={styles.companyDonationForm.customDonationWrapper}>
                   <input
                     className={styles.companyDonationForm.customDonationInput}
-                    type="text"
+                    type="number"
                     placeholder="type your donation amount"
                     onChange={handleCustomDonationAmountChange}
                   />
@@ -136,66 +122,65 @@ export default function CompanyDonationForm({
               )}
             </div>
           )}
-          <div >
-            <label htmlFor="companyRegistrationNumber">
-              Organization Number*
-            </label>
-            <div className="flex space-x-2">
+          <div className={styles.companyDonationForm.organizationNumberWrapper}>
+            <div className={styles.companyDonationForm.organizationNumberInputContainer}>
               <input
-                type="search"
+                type="number"
                 name="companyRegistrationNumber"
-                placeholder="xxxxxx-xxxx"
+                placeholder="xxxxxx-xxxx (Organization Number)"
                 required
                 onChange={handleInputChange}
                 className={styles.companyDonationForm.inputField}
               />
             </div>
           </div>
-          <div className={styles.companyDonationForm.customInputHolder}>
-            <label htmlFor="companyEmail">Company Email*</label>
+          <div className={styles.companyDonationForm.inputHolder}>
             <input
               type="email"
               name="companyEmail"
               required
               onChange={handleInputChange}
+              placeholder="company@example.com (Company Email)"
               className={styles.companyDonationForm.inputField}
             />
           </div>
-          <div>
-            <label>Person to contact</label>
-            <p>
+          <div className={styles.companyDonationForm.contactPersonWrapper}>
+            <label className={styles.companyDonationForm.contactPersonLabel}>
+              Person to contact
+            </label>
+            <p className={styles.companyDonationForm.contactPersonDescription}>
               Your contact information in case we need to reach you regarding
               your order.
             </p>
           </div>
-          <div className={styles.companyDonationForm.contactInfo}>
-            <div className={styles.companyDonationForm.customInputHolder}>
-              <label htmlFor="companyFirstName">First Name*</label>
+          <div className={styles.companyDonationForm.contactInfoWrapper}>
+            <div className={styles.companyDonationForm.inputHolder}>
               <input
                 type="text"
                 name="companyFirstName"
                 required
                 onChange={handleInputChange}
+                placeholder="First Name"
                 className={styles.companyDonationForm.inputField}
               />
             </div>
-            <div className={styles.companyDonationForm.customInputHolder}>
-              <label htmlFor="companyLastName">Last Name*</label>
+            <div className={styles.companyDonationForm.inputHolder}>
               <input
                 type="text"
                 name="companyLastName"
                 required
                 onChange={handleInputChange}
+                placeholder="Last Name"
                 className={styles.companyDonationForm.inputField}
               />
             </div>
-            <div className={styles.companyDonationForm.customInputHolder}>
-              <label htmlFor="companyMobileNumber">Mobile*</label>
+            <div className={styles.companyDonationForm.inputHolder}>
               <input
-                type="text"
+                type="number"
                 name="companyMobileNumber"
                 required
                 onChange={handleInputChange}
+                placeholder="Mobile Number"
                 className={styles.companyDonationForm.inputField}
               />
             </div>

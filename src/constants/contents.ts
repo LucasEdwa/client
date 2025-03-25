@@ -86,7 +86,7 @@ export type TNavigation = {
 export const HeroMain: THeroMain = {
   title: "For all in Gambia",
   description: "We are a non-profit organization that aims to help the people of Gambia.",
-  image: "src/assets/hero1.jpeg",
+  image: "src/assets/carousel1.jpg",
   link: "/projects",
   heroCard: {
     title: "Our Projects",
@@ -129,7 +129,7 @@ export const Hero2Content: THero2 = {
 };
 
 export const DonationContent: TDonationContent = {
-  title: "Stötta Bio's Brick by Brick Internations arbete!",
+  title: "Support Brick by Brick International work!",
   description: "By helping Brick by Brick International, you are helping to build a better future for the family in Uganda, show that there is still hope and you are capable to make a difference in the world.",
   privatePersonLabel: "Private person",
   companyLabel: "Company",
@@ -220,4 +220,15 @@ export const PartnersContent: TPartnersContent = {
     { name: "Partner 4", logo: "https://via.placeholder.com/150" },
     { name: "Partner 5", logo: "https://via.placeholder.com/150" },
   ]
+};
+
+export const userContent = {
+  name: "John Doe",
+  role: "Full Stack Developer",
+  location: "Bay Area, San Francisco, CA",
+  avatar: "https://bootdey.com/img/Content/avatar/avatar7.png",
+  buttons: {
+    follow: "Follow",
+    message: "Message"
+  }
 };

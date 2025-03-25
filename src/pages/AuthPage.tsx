@@ -2,6 +2,8 @@ import  { useState, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { authContent } from "../constants/contents";
 import { styles } from "../constants/styles";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 
 type FormData = {
   first_name: string;
@@ -181,11 +183,11 @@ export default function AuthPage() {
         </div>
 
         <button type="button" className={styles.authStyles.button.social}>
-          <img src="/google.svg" alt="Google" className="h-5 w-5" />
+          <FcGoogle className="h-5 w-5" />
           {authContent.socialLogin.googleText}
         </button>
         <button type="button" className={styles.authStyles.button.social}>
-          <img src="/facebook.svg" alt="Facebook" className="h-5 w-5" />
+          <FaFacebook className="h-5 w-5 text-[#1877F2]" />
           {authContent.socialLogin.facebookText}
         </button>
       </div>
