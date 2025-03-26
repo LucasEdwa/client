@@ -191,6 +191,7 @@ export const styles = {
     contactPersonDescription: "text-xs",
     contactInfoWrapper: "space-y-5",
     inputHolder: "flex flex-col gap-2 items-left",
+    errorContainer: "mt-4 space-y-2",
   },
   contactStyles: {
     pageWrapper: "w-full",

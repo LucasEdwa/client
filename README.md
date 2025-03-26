@@ -194,5 +194,5 @@ return (
 
 
 ## TODO:
-  - Finish user page
-  -Create another
+  - Finish user page.
+  - Create backend and set the fetch to the data

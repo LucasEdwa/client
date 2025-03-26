@@ -222,3 +222,10 @@ export type TUserPageContent = {
   };  donations: TDonation[];
 
 };
+
+export type TSignatureType = "become-monthly-donor" | "give-a-gift";
+
+export type TPrivateDonationFormProps = {
+  formData: TPrivateDonationFormData;
+  setFormData: React.Dispatch<React.SetStateAction<TPrivateDonationFormData>>;
+}
