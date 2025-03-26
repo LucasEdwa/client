@@ -154,7 +154,7 @@ export const styles = {
     errorMessage: "error bg-red-400/60 p-2 rounded-full",
     checkboxContainer: "flex justify-between items-center space-x-2",
     checkboxLabel: "flex items-center space-x-2",
-    infoIcon: "cursor-pointer text-white text-xl",
+    infoIcon: "cursor-pointer text-white text-xs",
     personalNumberContainer: "w-full p-2 mt-1 border border-gray-300 text-gray-900 rounded",
     submitButton: "w-full p-2 mt-1 border-1 mt-7 bg-blue-500 text-white rounded cursor-pointer transition-colors duration-300 hover:bg-blue-700 flex items-center justify-center space-x-2",
     formWrapper: "w-full",
@@ -315,7 +315,7 @@ export const styles = {
     image: "w-full",
     cardTitle: "text-xl font-semibold mt-2",
     cardDescription: "text-gray-600 mt-2",
-    button: "inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors",
+    button: "inline-block w-full mt-4 px-4 py-2 bg-blue-500 text-white text-center rounded hover:bg-blue-600 transition-colors",
   },
 };
 

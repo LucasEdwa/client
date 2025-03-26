@@ -1,11 +1,22 @@
+export type TFormErrors = {
+  email?: string;
+  mobileNumber?: string;
+  personalNumber?: string;
+  companyRegistrationNumber?: string;
+  companyEmail?: string;
+  companyFirstName?: string;
+  companyLastName?: string;
+  companyMobileNumber?: string;
+  [key: string]: string | undefined;
+};
+
 export type TNavigation = {
   id: number;
   title: string;
   link: string;
   dropdownItems?: { id: number; title: string; link: string }[];
-  
 };
-
+//Hero 1
 export type THeroMain = {
   title: string;
   description: string;
@@ -30,7 +41,7 @@ export type THeroMain = {
     };
   };
 };
-
+//Hero 2
 export type THero2 = {
   news: { text: string; link: string }[];
   image: string;
@@ -42,6 +53,7 @@ export type THero2 = {
     buttonLink: string;
   };
 };
+//Project Page
 export type TProject = {
   id: number;
   title: string;
@@ -49,26 +61,35 @@ export type TProject = {
   image: string;
   link: string;
 };
-
+//Donation Page
 export type TPrivateDonationFormData = {
+  donationType: "private";
   fullName: string;
   email: string;
   mobileNumber: string;
   checkedForTaxReduction: boolean;
   personalNumber?: string;
-  donationAmount?: number | string;
+  donationAmount?: number;
   signatureType: string;
 };
 
 export type TCompanyDonationFormData = {
+  donationType: "company";
   companyRegistrationNumber: string;
   companyEmail: string;
   companyFirstName: string;
   companyLastName: string;
   companyMobileNumber: string;
-  donationAmount: number | string;
+  donationAmount: number;
   signatureType: string;
 };
+
+export type TStripePaymentData = {
+  paymentMethod: "swish" | "card";
+  swishNumber?: string;
+  paymentMethodId?: string;
+  userId?: string;
+} & (TPrivateDonationFormData | TCompanyDonationFormData);
 
 export type TDonationMessages = {
   [key: string]: string;
@@ -83,32 +104,65 @@ export type TDonationAmountOptionsProps = {
   donationAmount: string;
   handleDonationAmountClick: (amount: string) => void;
 };
-
-export type TFormErrors = {
-  email?: string;
-  mobileNumber?: string;
-  personalNumber?: string;
-  companyRegistrationNumber?: string;
-  companyEmail?: string;
-  companyFirstName?: string;
-  companyLastName?: string;
-  companyMobileNumber?: string;
-  [key: string]: string | undefined;
-};
-
+//Donation Page
 export type TDonationContent = {
   title: string;
   description: string;
   privatePersonLabel: string;
   companyLabel: string;
 };
+//Contact Page
 export type TContact = {
   description: string;
   phone: string;
   address: string;
   options: Array<string>;
 };
+//Partners Page
+export type TPartner = {
+  name: string;
+  logo: string;
+};
 
+export type TPartnersContent = {
+  title: string;
+  description: string;
+  partners: TPartner[];
+};
+//About Page
+export type TGoal = {
+  title: string;
+  description: string;
+  type: "nature" | "housing" | "welfare" | "context";
+};
+
+export type TAboutContent = {
+  mainTitle: string;
+  goals: {
+    natureConservation: TGoal;
+    affordableHousing: TGoal;
+    communityWelfare: TGoal;
+    context: TGoal;
+  };
+};
+//Gift Shopping Page
+export type TShopItem = {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+  description?: string;
+};
+
+export type TGiftShoppingContent = {
+  title: string;
+  description: string;
+  itemsPerPage: number;
+  totalItems: number;
+  items: TShopItem[];
+};
+
+//Auth Page
 export type TAuthPage = {
   title: string;
   subtitle: string;
@@ -133,62 +187,38 @@ export type TAuthPage = {
     forgotPassword: string;
   };
 };
-
-export type TPartner = {
-  name: string;
-  logo: string;
-};
-
-export type TPartnersContent = {
-  title: string;
-  description: string;
-  partners: TPartner[];
-};
-
-export type TGoal = {
-  title: string;
-  description: string;
-  type: 'nature' | 'housing' | 'welfare' | 'context';
-};
-
-export type TAboutContent = {
-  mainTitle: string;
-  goals: {
-    natureConservation: TGoal;
-    affordableHousing: TGoal;
-    communityWelfare: TGoal;
-    context: TGoal;
-  };
-};
-
-export type TShopItem = {
+//User Page
+export type TDonation = {
   id: number;
-  name: string;
-  price: string;
-  image: string;
-  description?: string;
-};
-
-export type TGiftShoppingContent = {
-  title: string;
-  description: string;
-  itemsPerPage: number;
-  totalItems: number;
-  items: TShopItem[];
-};
-export type TUser = {
-  id: number;
-  fullname?: string;
-  email: string;
-  password: string;
-  mobileNumber?: string;
-  checkedForTaxReduction?: boolean;
-  personalNumber?: string;
+  amount: number;
+  date: string;
+  paymentMethod: "swish" | "card";
+  signatureType: string;
+  isCompanyDonation: boolean;
+  project: string;
+  status: "completed" | "pending" | "failed";
+  // Company specific fields
   companyRegistrationNumber?: string;
   companyEmail?: string;
   companyFirstName?: string;
   companyLastName?: string;
   companyMobileNumber?: string;
-  donationAmount?: number | string;
-  signatureType?: string;
+  // Private person specific fields
+  fullName?: string;
+  email?: string;
+  mobileNumber?: string;
+  checkedForTaxReduction?: boolean;
+  personalNumber?: string;
+};
+
+export type TUserPageContent = {
+  user: {
+    fullName: string;
+    email: string;
+    phone: string;
+    mobile: string;
+    address: string;
+    profileImage?: string;
+  };  donations: TDonation[];
+
 };

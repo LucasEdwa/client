@@ -1,4 +1,4 @@
-import { THeroMain,THero2,TDonationContent,TProject,TContact,TAuthPage, TAboutContent, TGiftShoppingContent, TPartnersContent } from "../types/types";
+import { THeroMain,THero2,TDonationContent,TProject,TContact,TAuthPage, TAboutContent, TGiftShoppingContent, TPartnersContent, TUserPageContent } from "../types/types";
 
 export const ProjectsContent: TProject[] = [
   {
@@ -222,13 +222,70 @@ export const PartnersContent: TPartnersContent = {
   ]
 };
 
-export const userContent = {
-  name: "John Doe",
-  role: "Full Stack Developer",
-  location: "Bay Area, San Francisco, CA",
-  avatar: "https://bootdey.com/img/Content/avatar/avatar7.png",
-  buttons: {
-    follow: "Follow",
-    message: "Message"
-  }
-};
+export const userContent: TUserPageContent = {
+  user: {
+    fullName: "Kenneth Valdez",
+    email: "fip@jukmuh.al",
+    phone: "(239) 816-9029",
+    mobile: "(320) 380-4539",
+    address: "Bay Area, San Francisco, CA",
+    profileImage:    "https://bootdey.com/img/Content/avatar/avatar7.png",
+
+  },
+  donations: [
+    {
+      id: 1,
+      amount: 1000,
+      date: "2024-03-20",
+      paymentMethod: "card",
+      signatureType: "public",
+      isCompanyDonation: false,
+      project: "Nature Conservation",
+      status: "completed",
+      fullName: "Kenneth Valdez",
+      email: "fip@jukmuh.al",
+      mobileNumber: "(320) 380-4539"
+    },
+    {
+      id: 2,
+      amount: 500,
+      date: "2024-03-15",
+      paymentMethod: "swish",
+      signatureType: "anonymous",
+      isCompanyDonation: true,
+      project: "Affordable Housing",
+      status: "completed",
+      companyRegistrationNumber: "123456",
+      companyEmail: "contact@acme.com",
+      companyFirstName: "John",
+      companyLastName: "Doe",
+      companyMobileNumber: "(555) 123-4567"
+    },
+    {
+      id: 3,
+      amount: 750,
+      date: "2024-03-10",
+      paymentMethod: "card",
+      signatureType: "public",
+      isCompanyDonation: false,
+      project: "Community Welfare",
+      status: "completed",
+      fullName: "Kenneth Valdez",
+      email: "fip@jukmuh.al",
+      mobileNumber: "(320) 380-4539"
+    },
+    {
+      id: 4,
+      amount: 2000,
+      date: "2024-03-25",
+      paymentMethod: "card",
+      signatureType: "public",
+      isCompanyDonation: false,
+      project: "Context Development",
+      status: "pending",
+      fullName: "Kenneth Valdez",
+      email: "fip@jukmuh.al",
+      mobileNumber: "(320) 380-4539"
+    }
+  ]
+}; 

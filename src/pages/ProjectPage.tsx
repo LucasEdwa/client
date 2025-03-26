@@ -9,7 +9,7 @@ export const ProjectPage = () => {
         return <div>Project not found</div>;
     }
 
-    console.log(project); // Log the project data to check the image URL
+    console.log(project); 
 
     const imageUrl = project.image.startsWith('http') ? project.image : `/${project.image}`;
 

@@ -1,35 +1,23 @@
-import React, { useState } from "react";
+import React, { useState , FormEvent} from "react";
 import Swal from "sweetalert2";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useLocation } from "react-router";
 import { QRCodeSVG } from 'qrcode.react';
-
+import { TStripePaymentData, TCompanyDonationFormData, TPrivateDonationFormData } from "../types/types";
 import swishLogo from "../assets/swish.png";
 import visaLogo from "../assets/visa.jpg";
 import masterLogo from "../assets/master.png";
 import maestroLogo from "../assets/maestro.png";
 import { styles } from "../constants/styles";
-// Define interfaces for the location state
-interface LocationState {
-  donationAmount: number;
-  email: string;
-  mobileNumber?: string;
-  donationType: string;
-  signatureType: string;
-  personalNumber?: string;
-  fullName: string;
-  companyFirstName?: string;
-  companyLastName?: string;
-  companyEmail?: string;
-  companyMobileNumber?: string;
-  companyRegistrationNumber?: string;
-  checkedForTaxReduction?: boolean;
+
+type LocationState = TPrivateDonationFormData | TCompanyDonationFormData;
+
+function isPrivateDonation(data: LocationState): data is TPrivateDonationFormData {
+  return data.donationType === "private";
 }
 
-// Define interface for mutation variables
-interface MutationVariables extends LocationState {
-  paymentMethodId?: string;
-  userId?: string;
+function isCompanyDonation(data: LocationState): data is TCompanyDonationFormData {
+  return data.donationType === "company";
 }
 
 function PaymentPage() {
@@ -56,25 +44,22 @@ function PaymentPage() {
       version: 1,
       payee: { value: swishNumber.replace(/\D/g, '') },
       amount: { value: locationState.donationAmount },
-      message: { value: `Donation from ${locationState.fullName}` }
+      message: { value: `Donation from ${isPrivateDonation(locationState) ? locationState.fullName : locationState.companyFirstName + " " + locationState.companyLastName}` }
     };
 
     if (isMobile) {
-      // For mobile devices, try to open Swish app
       const swishUrl = `swish://payment?data=${encodeURIComponent(JSON.stringify(swishData))}`;
       window.location.href = swishUrl;
 
-      // Fallback if Swish app doesn't open after 2 seconds
       setTimeout(() => {
         setShowQRCode(true);
       }, 2000);
     } else {
-      // For desktop, show QR code immediately
       setShowQRCode(true);
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (paymentMethod === "swish") {
@@ -124,10 +109,10 @@ function PaymentPage() {
     if (
       !locationState.donationType ||
       !locationState.signatureType ||
-      isNaN(locationState.donationAmount) ||
+      !locationState.donationAmount ||
       locationState.donationAmount <= 0 ||
-      !locationState.fullName ||
-      !locationState.email ||
+      (isPrivateDonation(locationState) && (!locationState.fullName || !locationState.email)) ||
+      (isCompanyDonation(locationState) && (!locationState.companyFirstName || !locationState.companyEmail)) ||
       (paymentMethod === "card" && !paymentMethodId)
     ) {
       Swal.fire({
@@ -139,26 +124,17 @@ function PaymentPage() {
       return;
     }
 
-    const variables: MutationVariables = {
-      donationType: locationState.donationType,
-      signatureType: locationState.signatureType,
-      donationAmount: parseInt(String(locationState.donationAmount), 10),
-      fullName: locationState.fullName,
-      email: locationState.email,
-      mobileNumber: locationState.mobileNumber,
-      personalNumber: locationState.personalNumber,
-      companyFirstName: locationState.companyFirstName || "",
-      companyLastName: locationState.companyLastName || "",
-      companyRegistrationNumber: locationState.companyRegistrationNumber || "",
-      companyEmail: locationState.companyEmail || "",
-      companyMobileNumber: locationState.companyMobileNumber || "",
+    const paymentData: TStripePaymentData = {
+      paymentMethod,
+      swishNumber: (paymentMethod as "swish" | "card") === "swish" ? swishNumber : undefined,
       paymentMethodId,
-      checkedForTaxReduction: !!locationState.checkedForTaxReduction,
-      userId: "1", 
+      userId: "1",
+      ...locationState
     };
-    console.log(variables);
 
-};
+    console.log(paymentData);
+    // Here you would typically send the paymentData to your backend
+  };
 
   return (
     <div className={styles.paymentStyles.container}>
@@ -168,7 +144,7 @@ function PaymentPage() {
         <p className={styles.paymentStyles.summary.text}>Signature as: {locationState.signatureType}</p>
         <p className={styles.paymentStyles.summary.text}>Donation Amount: {locationState.donationAmount} kr</p>
         
-        {locationState.donationType === "private" && (
+        {isPrivateDonation(locationState) && (
           <div className={styles.paymentStyles.summary.privateInfo}>
             <p className={styles.paymentStyles.summary.text}>Fullname: {locationState.fullName}</p>
             <p className={styles.paymentStyles.summary.text}>Email: {locationState.email}</p>
@@ -179,9 +155,9 @@ function PaymentPage() {
           </div>
         )}
 
-        {locationState.donationType === "company" && (
+        {isCompanyDonation(locationState) && (
           <div className={styles.paymentStyles.summary.companyInfo}>
-            <p className={styles.paymentStyles.summary.text}>Company Contact: {locationState.fullName}</p>
+            <p className={styles.paymentStyles.summary.text}>Company Contact: {locationState.companyFirstName} {locationState.companyLastName}</p>
             <p className={styles.paymentStyles.summary.text}>Company Email: {locationState.companyEmail}</p>
             <p className={styles.paymentStyles.summary.text}>Company Phone: {locationState.companyMobileNumber}</p>
             <p className={styles.paymentStyles.summary.text}>Registration Number: {locationState.companyRegistrationNumber}</p>
@@ -241,7 +217,7 @@ function PaymentPage() {
                     version: 1,
                     payee: { value: swishNumber.replace(/\D/g, '') },
                     amount: { value: locationState.donationAmount },
-                    message: { value: `Donation from ${locationState.fullName}` }
+                    message: { value: `Donation from ${isPrivateDonation(locationState) ? locationState.fullName : locationState.companyFirstName + " " + locationState.companyLastName}` }
                   }))}`}
                   size={256}
                 />
