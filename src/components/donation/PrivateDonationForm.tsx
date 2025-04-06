@@ -58,11 +58,11 @@ export default function PrivateDonationForm({
       if (numericValue.length > 15) return;
     }
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: sanitizedValue,
-    }));
-  }, [sanitizeInput, setFormData]);
+    setFormData({
+      ...formData, // Merge existing form data
+      [name]: sanitizedValue, // Update only the changed field
+    });
+  }, [sanitizeInput, setFormData, formData]);
 
   /**
    * Handles custom donation amount input
@@ -76,10 +76,10 @@ export default function PrivateDonationForm({
 
     if (value === "") {
       setCustomDonationAmount("");
-      setFormData(prev => ({
-        ...prev,
-        donationAmount: 0
-      }));
+      setFormData({
+        ...formData,
+        donationAmount: 0,
+      });
       return;
     }
 
@@ -90,13 +90,13 @@ export default function PrivateDonationForm({
       const formattedAmount = validatedAmount.toFixed(2);
       
       setCustomDonationAmount(formattedAmount);
-      setFormData(prev => ({
-        ...prev,
+      setFormData({
+        ...formData,
         donationAmount: validatedAmount,
-        ...(validatedAmount > 10000 && { checkedForTaxReduction: true })
-      }));
+        ...(validatedAmount > 10000 && { checkedForTaxReduction: true }),
+      });
     }
-  }, [setFormData]);
+  }, [setFormData, formData]);
 
   /**
    * Handles tax reduction checkbox changes
@@ -333,7 +333,7 @@ export default function PrivateDonationForm({
           <input
             type="email"
             name="email"
-            placeholder="Email Address*"
+            placeholder="name@example.com*"
             required
             value={formData.email}
             onChange={handleInputChange}
@@ -343,7 +343,7 @@ export default function PrivateDonationForm({
           <input
             type="number"
             name="mobileNumber"
-            placeholder="Mobile Number*"
+            placeholder="0719045402*"
             value={formData.mobileNumber}
             onChange={handleInputChange}
             required

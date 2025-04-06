@@ -12,6 +12,7 @@ import About from './pages/About';
 import PartnersSection from './pages/Partners';
 import GiftShopping from './pages/GiftShopping';
 import {UserPage} from './pages/UserPage';
+import { Cart } from './pages/Cart';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
       {path: "/about", element: <About />},
       {path: "/partners", element: <PartnersSection />},
       {path: "/gift-shopping", element: <GiftShopping />},
-      {path: "/user", element: <UserPage />}
+      {path: "/user", element: <UserPage />},
+      {path: "/cart", element: <Cart />},
 
     ],
   },

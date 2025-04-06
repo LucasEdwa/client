@@ -1,8 +1,10 @@
 import { Link } from "react-router";
 import { HeroMain } from "../constants/contents";
 import { styles } from "../constants/styles";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function Hero1() {
+  const { theme } = useTheme();
   return (
     <div className={styles.hero1.container}>
       <img
@@ -30,7 +32,7 @@ export default function Hero1() {
             </Link>
           </div>
         </div>
-        <div className={styles.hero1.articleContainer}>
+        <div className={`${styles.hero1.articleContainer} ${theme.background}`}>
           <article className={styles.hero1.article}>
             <div className={styles.hero1.articleContent}>
               <img alt="" src={HeroMain.heroCard.image} className={styles.hero1.articleImage} />

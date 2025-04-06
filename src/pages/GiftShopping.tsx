@@ -1,7 +1,28 @@
+import { useState } from "react";
 import { GiftShoppingContent } from "../constants/contents";
 import { styles } from "../constants/styles";
+import { useTheme } from "../contexts/ThemeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import { useCart } from "../contexts/CartContext";
+import { Link } from "react-router";
 
 export default function GiftShopping() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(GiftShoppingContent.items.length / itemsPerPage);
+  const {theme} = useTheme();
+  const { addToCart } = useCart();
+
+  const currentItems = GiftShoppingContent.items.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <section>
       <div className={styles.giftShoppingStyles.container}>
@@ -12,16 +33,23 @@ export default function GiftShopping() {
           <p className={styles.giftShoppingStyles.header.description}>
             {GiftShoppingContent.description}
           </p>
-        </header>
+          <div className={styles.giftShoppingStyles.header.icon}>
+            <Link to="/cart">
+              <FontAwesomeIcon
+                icon={faBasketShopping}
+              />
+            </Link>
+          </div>
+          </header>
 
         <div className="mt-8">
           <p className={styles.giftShoppingStyles.itemsCount}>
-            Showing <span>{GiftShoppingContent.itemsPerPage}</span> of {GiftShoppingContent.totalItems}
+            Showing <span>{itemsPerPage}</span> of {GiftShoppingContent.items.length}
           </p>
         </div>
 
         <ul className={styles.giftShoppingStyles.grid}>
-          {GiftShoppingContent.items.map((item) => (
+          {currentItems.map((item) => (
             <li key={item.id} className={styles.giftShoppingStyles.itemCard}>
               <img
                 src={item.image}
@@ -32,21 +60,40 @@ export default function GiftShopping() {
                 <h3 className={styles.giftShoppingStyles.itemTitle}>
                   {item.name}
                 </h3>
-                <p className={styles.giftShoppingStyles.itemPrice}>{item.price}</p>
+                <p className={styles.giftShoppingStyles.itemPrice}>{item.price } {item.currency} </p>
               </div>
-              <button className={styles.giftShoppingStyles.button}>
+              <button
+                className={`${styles.giftShoppingStyles.button} ${theme.button}`}
+                onClick={() =>
+                  addToCart({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    currency: item.currency,
+                    quantity: 1,
+                  })
+                }
+              >
                 Add to Cart
               </button>
             </li>
           ))}
         </ul>
 
-        {/* Pagination component can be extracted to a separate component */}
         <ol className={styles.giftShoppingStyles.pagination}>
-          {/* ... pagination content ... */}
+          {Array.from({ length: totalPages }, (_, index) => (
+            <li
+              key={index + 1}
+              className={`${styles.giftShoppingStyles.pageItem} ${
+                currentPage === index + 1 ? styles.giftShoppingStyles.activePage : ""
+              }`}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </li>
+          ))}
         </ol>
       </div>
     </section>
   );
 }
-  

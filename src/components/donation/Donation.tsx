@@ -1,36 +1,36 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import PrivateDonationForm from "./PrivateDonationForm";
 import CompanyDonationForm from "./CompanyDonationForm";
-import hero1 from "../../assets/img_donation.jpeg"; // Ensure the path is correct
-import { TPrivateDonationFormData, TCompanyDonationFormData } from "../../types/types";
+import hero1 from "../../assets/img_donation.jpeg";
 import { DonationContent } from "../../constants/contents";
 import { useTheme } from "../../contexts/ThemeContext";
 import { styles } from "../../constants/styles";
+import { DonetionReducer, initialState, DonationActionTypes } from "../../reducers/donationReducer";
+import { TPrivateDonationFormData, TCompanyDonationFormData } from "../../types/types";
 
 export default function Donation() {
-  const [donationType, setDonationType] = useState<"private" | "company">("private");
+  const [state, dispatch] = useReducer(DonetionReducer, initialState);
   const { theme } = useTheme();
-  const [privateFormData, setPrivateFormData] = useState<TPrivateDonationFormData>({
-    donationType: "private",
-    fullName: "",
-    email: "",
-    mobileNumber: "",
-    checkedForTaxReduction: false,
-    signatureType: "",
-  });
-  const [companyFormData, setCompanyFormData] = useState<TCompanyDonationFormData>({
-    donationType: "company",
-    companyRegistrationNumber: "",
-    companyEmail: "",
-    companyFirstName: "",
-    companyLastName: "",
-    companyMobileNumber: "",
-    signatureType: "",
-    donationAmount: 0
-  });
 
   const handleDonationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDonationType(event.target.value as "private" | "company");
+    dispatch({
+      type: DonationActionTypes.SET_DONATION_TYPE,
+      payload: { donationType: event.target.value as "private" | "company" },
+    });
+  };
+
+  const setPrivateFormData = (updatedData: Partial<TPrivateDonationFormData>) => {
+    dispatch({
+      type: DonationActionTypes.SET_PRIVATE_FORM_DATA,
+      payload: updatedData,
+    });
+  };
+
+  const setCompanyFormData = (updatedData: Partial<TCompanyDonationFormData>) => {
+    dispatch({
+      type: DonationActionTypes.SET_COMPANY_FORM_DATA,
+      payload: updatedData,
+    });
   };
 
   return (
@@ -48,7 +48,7 @@ export default function Donation() {
               name="donation"
               value="private"
               onChange={handleDonationTypeChange}
-              defaultChecked
+              checked={state.donationType === "private"}
               className="text-xs"
             />
             <label htmlFor="private-person" className={styles.donation.radioLabel}>
@@ -60,22 +60,33 @@ export default function Donation() {
               name="donation"
               value="company"
               onChange={handleDonationTypeChange}
+              checked={state.donationType === "company"}
               className=""
             />
             <label htmlFor="company" className={styles.donation.radioLabel}>
               Company
             </label>
           </div>
-          {donationType === "private" && (
+          {state.donationType === "private" && (
             <PrivateDonationForm
-              formData={privateFormData}
-              setFormData={setPrivateFormData}
+              formData={state.privateFormData}
+              setFormData={(value) =>
+                typeof value === "function"
+                  ? setPrivateFormData(value(state.privateFormData))
+                  : setPrivateFormData(value)
+              } // Wrap to match expected type
             />
           )}
-          {donationType === "company" && (
+          {state.donationType === "company" && (
             <CompanyDonationForm
-              formData={companyFormData}
-              setFormData={setCompanyFormData}
+              formData={state.companyFormData}
+              setFormData={
+                (value)=>
+                  typeof value === "function"
+                    ? setCompanyFormData(value(state.companyFormData))
+                    : setCompanyFormData(value)
+
+              } // Wrap to match expected type
             />
           )}
         </div>

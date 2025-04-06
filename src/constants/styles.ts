@@ -1,5 +1,7 @@
 import { IThemes } from "../models/ITheme";
 
+
+
 export const colors = {
   primary: "red-900", // Deep red
   secondary: "pink-100", // Soft pink
@@ -24,7 +26,7 @@ export const themes: IThemes = {
   secondary: {
     background: colors.background.secondary,
     text: colors.text.secondary,
-    button: "bg-pink-500 text-white p-3 rounded-4xl w-1/2",
+    button: " bg-red-500 text-white p-3 rounded-4xl w-1/2",
   },
 };
 
@@ -84,9 +86,9 @@ export const styles = {
     container: "w-full relative",
     image: "h-[350px] lg:h-[680px] w-full object-cover",
     contentContainer:
-      "flex flex-col xl:flex-row justify-center xl:absolute lg:justify-between items-center top-10 left-35 xl:top-40 xl:left-90 p-4 items-start xl:items-end",
+      "flex flex-col xl:flex-row justify-center xl:absolute lg:justify-between items-center top-10 left-35 lg:top-30 lg:left-90 p-4 items-start lg:items-end",
     textContainer:
-      "text-left hover:scale-101 w-fit  gap-2 flex flex-col absolute xl:relative top-30 xl:transform xl:-translate-x-1/2 xl:-translate-y-1/2",
+      "text-left hover:scale-101 w-fit  gap-2 flex flex-col absolute lg:relative top-30 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2",
     heading1:
       "text-black p-1 text-sm bg-green-600 xl:text-4xl font-semibold italic",
     heading2: "bg-green-600 text-black text-sm xl:text-4xl italic",
@@ -95,14 +97,14 @@ export const styles = {
     button:
       "text-sm no-underline py-2 px-4 bg-red-700 transition-all ease-in-out duration-100 shine-effect",
     articleContainer:
-      "lg:w-1/3 lg:p-4 flex justify-center xl:justify-end text-black bg-opacity-100 rounded-lg text-lg",
+      "lg:w-1/3 lg:p-4 flex justify-center xl:justify-end text-black  rounded-lg text-lg",
     article:
-      "overflow-hidden rounded-lg border w-full xl:mt-0 mt-10 border-gray-100 bg-white shadow-sm",
+      "overflow-hidden rounded-lg border w-full xl:mt-0 mt-10 border-gray-100 shadow-sm",
     articleContent: "p-4 sm:p-6",
     articleImage: "w-full object-cover",
-    articleText: "lg:text-sm text-xs mt-2",
+    articleText: "lg:text-sm text-xs mt-2 text-white",
     articleLink:
-      "group inline-flex items-center gap-1 text-sm font-medium text-blue-600",
+      "group inline-flex items-center gap-1 text-sm font-medium decoration-none text-blue-600 text-black",
     articleLinkIcon: "block transition-all group-hover:ms-0.5 rtl:rotate-180",
   },
   hero2: {
@@ -110,7 +112,7 @@ export const styles = {
       "lg:py-4 xl:py-8 w-full flex flex-col  items-center justify-center gap-4",
     shadowContainer: "w-full shadow-slate-200 shadow-inner ",
     textContainer:
-      "items-center justify-center text-black text-lg font-medium text-center lg:gap-4 lg:my-5",
+      "items-center justify-center text-white text-lg font-medium text-center lg:gap-4 lg:my-5",
     newsContainer:
       "lg:flex lg:ml-2 sx:flex-col p-8 mb-6 justify-center items-center ",
     newsItem: "flex gap-2 p-0 lg:p-4 items-center",
@@ -118,18 +120,18 @@ export const styles = {
     newsLink:
       "text-black lg:text-lg text-xs no-underline hover:text-blue-500 hover:underline",
     imageContainer:
-      "lg:flex xs:flex-col text-left justify-center items-center p-4 gap-4 ",
-    image: "w-full h-64 object-cover",
+      "lg:flex xs:flex-col text-left justify-center items-center p-4 gap-4 w-full",
+    image: "w-full h-64 lg:h-76 object-cover",
     contentContainer: "flex flex-col gap-8 p-8 w-full bg-gray-500",
     heading1:
       "text-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold w-fit",
     heading2:
       "text-xl bg-gradient-to-r mt-2 from-blue-500 to-purple-500 text-white font-bold w-fit",
-    paragraph: "text-sm font-medium",
+    paragraph: "text-sm text-white  lg:text-lg",
     buttonContainer: "border-t p-3 border-green-600 hover:blu border-b w-max",
     button: "bg-red-800 hover:bg-red-600 p-1 my-1 no-underline text-white",
     newsTitleContainer: "lg:p-4 xs:p-2",
-    newsTitle: "lg:text-lg xs:text-sm",
+    newsTitle: "lg:text-lg text-black xs:text-sm",
     imageWrapper: "lg:flex xs:flex-col text-left justify-center items-center p-4 gap-4",
     contentWrapper: "flex flex-col gap-4",
   },
@@ -141,7 +143,7 @@ export const styles = {
     description: "text-md p-8 italic",
     radioGroup: "flex items-center gap-2",
     radioLabel: "text-xs ",
-    image: "w-full lg:h-[40rem] h-[15rem] object-cover p-4 right-0 top-0",
+    image: "w-full lg:h-[40rem] lg:mt-15 h-[15rem] object-cover p-4 right-0 top-0",
   },
   privateDonationForm: {
     formContainer: "w-full lg:px-5 lg:pb-5",
@@ -261,17 +263,22 @@ export const styles = {
     header: {
       title: "text-xl font-bold text-gray-900 sm:text-3xl",
       description: "mt-4 max-w-md text-gray-500",
+      icon: " p-10 text-gray-500 text-2xl",
     },
     itemsCount: "text-sm text-gray-500",
-    grid: "mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4",
+    grid: "mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 h-full",
     itemCard:
-      "relative flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md",
+      "relative flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 transform hover:scale-105",
     image: "h-64 w-full object-cover",
     itemInfo: "mt-4 flex flex-col items-center justify-center",
     itemTitle: "text-lg font-semibold text-gray-900",
     itemPrice: "mt-1 text-sm text-gray-500",
-    button: "mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg",
+    button: "mt-4  text-white px-4 py-2 rounded-lg",
     pagination: "mt-8 flex justify-center gap-1 text-xs font-medium",
+    pageItem:
+      "flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 transition-colors duration-200 hover:bg-blue-500 hover:text-white cursor-pointer",
+    activePage:
+      "flex h-8 w-8 items-center justify-center rounded-full border border-blue-500 bg-blue-500 text-white cursor-pointer",
   },
   partnersStyles: {
     container: "py-12 bg-gray-100 h-screen",
@@ -308,14 +315,14 @@ export const styles = {
     },
   },
   projectsStyles: {
-    container: "projects",
-    wrapper: "container",
+    container: " w-full ",
+    wrapper: " w-full ",
     title: "text-center text-2xl font-bold",
-    grid: "flex flex-wrap justify-center gap-4",
-    card: "w-[300px] p-4",
-    image: "w-full",
+    grid: "flex flex-col lg:flex-row justify-center  items-center gap-4 ",
+    card: "w-[400px] p-4  bg-white shadow-md rounded-lg",
+    image: "w-full  object-cover h-[10rem] rounded-lg",
     cardTitle: "text-xl font-semibold mt-2",
-    cardDescription: "text-gray-600 mt-2",
+    cardDescription: "text-gray-600 h-[20rem] mt-2",
     button: "inline-block w-full mt-4 px-4 py-2 bg-blue-500 text-white text-center rounded hover:bg-blue-600 transition-colors",
   },
 };
