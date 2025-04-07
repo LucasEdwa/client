@@ -320,7 +320,7 @@ export const styles = {
     title: "text-center text-2xl font-bold",
     grid: "flex flex-col lg:flex-row justify-center  items-center gap-4 ",
     card: "w-[400px] p-4  bg-white shadow-md rounded-lg",
-    image: "w-full  object-cover h-[10rem] rounded-lg",
+    image: "w-full  object-cover lg:h-[10rem] rounded-lg",
     cardTitle: "text-xl font-semibold mt-2",
     cardDescription: "text-gray-600 h-[20rem] mt-2",
     button: "inline-block w-full mt-4 px-4 py-2 bg-blue-500 text-white text-center rounded hover:bg-blue-600 transition-colors",

@@ -10,13 +10,19 @@ import {
   TPartnersContent,
   TUserPageContent,
 } from "../types/types";
+import hero1Image from "../assets/hero1.jpg";
+import hero1Image2 from "../assets/carousel1.jpg";
+import hero2Image from "../assets/hero2.jpg";
+import projectImage1 from "../assets/carousel2.jpg";
+import projectImage2 from "../assets/carousel3.jpg";
+import projectImage3 from "../assets/hero3.jpg";
 export const ProjectsContent: TProject[] = [
   {
     id: 1,
     title: "Organic Farm",
     description:
       "In the heart of Gambia, we are cultivating more than just crops — we are sowing the seeds of resilience, dignity, and self-sufficiency. Our organic farm project is a vibrant effort to reconnect communities with the land, using sustainable and eco-friendly farming practices that protect the environment while nourishing families. This initiative not only addresses food insecurity by providing fresh, chemical-free produce, but also creates local jobs, supports women and youth empowerment, and serves as a learning center for regenerative agriculture. It’s a place where hope grows alongside every plant, and where the soil becomes a source of strength for future generations.",
-    image: "src/assets/hero1.jpg",
+    image:  projectImage1,
     link: "/projects/1",
   },
   {
@@ -24,7 +30,7 @@ export const ProjectsContent: TProject[] = [
     title: "Education for All",
     description:
       "Education is the key to unlocking a brighter future, and our school project in Gambia is built on that belief. We are constructing a safe, inclusive, and inspiring learning environment where every child has the opportunity to dream, discover, and develop their full potential. With a focus on quality education, equal access, and creative learning, the school will provide not just academic knowledge, but also life skills and emotional support. We aim to empower young minds, uplift families, and foster a culture of lifelong learning. This is more than a school—it’s a beacon of hope where futures are written, one lesson at a time.",
-    image: "src/assets/hero2.jpg",
+    image: projectImage2,
     link: "/projects/2",
   },
   {
@@ -32,7 +38,7 @@ export const ProjectsContent: TProject[] = [
     title: "Community Health Clinic",
     description:
       "Health is the foundation of a thriving community, and our mission is to ensure that no one in Gambia is left behind when it comes to essential care. We are building a welcoming, fully equipped community health clinic that will offer compassionate, life-saving services to people of all ages. From maternal care and childhood vaccinations to disease prevention and health education, the clinic is designed to meet the urgent and ongoing needs of the region. Staffed by dedicated professionals and supported by local partnerships, it will stand as a symbol of care, dignity, and unity. Here, every patient will be seen, heard, and treated with the respect they deserve—because everyone deserves the chance to live a healthy, fulfilling life.",
-    image: "src/assets/hero3.jpg",
+    image: projectImage3,
     link: "/projects/3",
   },
 ];
@@ -100,13 +106,13 @@ export const HeroMain: THeroMain = {
   title: "For all in Gambia",
   description:
     "We are a non-profit organization that aims to help the people of Gambia.",
-  image: "src/assets/carousel1.jpg",
+  image: hero1Image2,
   link: "/projects",
   heroCard: {
     title: "Our Projects",
     description:
       "We have a number of projects that are aimed at helping the people of Gambia.",
-    image: "src/assets/hero1.jpg",
+    image: hero1Image,
     link: "/projects",
   },
   textContent: {
@@ -130,7 +136,7 @@ export const Hero2Content: THero2 = {
     { text: "Become a world contributor!", link: "/donation" },
     { text: "Our partners", link: "/partners" },
   ],
-  image: "src/assets/hero2.jpg",
+  image: hero2Image,
   content: {
     heading1: "Purchase a craft tool directly from Gambia",
     heading2: "to build schools for children",
