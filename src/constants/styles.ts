@@ -250,7 +250,7 @@ export const styles = {
     },
   },
   aboutStyles: {
-    container: "text-center lg:p-4 h-[100vh]",
+    container: "text-center lg:p-4 ",
     mainTitle: "text-2xl font-bold py-4",
     contentContainer: "container p-4 lg:grid-cols-2",
     goalsGrid: "lg:grid lg:grid-cols-2 flex flex-col gap-4",
