@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useLocation } from "react-router";
 import { QRCodeSVG } from 'qrcode.react';
-import { TStripePaymentData, TCompanyDonationFormData, TPrivateDonationFormData } from "../types/types";
+import {  TCompanyDonationFormData, TPrivateDonationFormData } from "../types/types";
 import swishLogo from "../assets/swish.png";
 import visaLogo from "../assets/visa.jpg";
 import masterLogo from "../assets/master.png";
