@@ -1,7 +1,7 @@
 import { TDonationMessages, TDonationMessageGenerator } from "../types/types";
 
 export const generateDonationMessage: TDonationMessageGenerator = (amount, amountMessage) =>
-  `Every month your ${amount ? `${amount} kr` : "optional donation"} ${amountMessage}. As a World Parent, you are helping to give everyone in Gambia hope to continue.`;
+  `Every month  ${amount ? `your ${amount} kr` : "to every 200kr donation,"} ${amountMessage}. As a World Parent, you are helping to give everyone in Gambia hope to continue.`;
 
 export const generateCompanyDonationMessage = (amount: string, amountMessage: string) =>
   `Every month your ${amount} kr ${amountMessage}. As donor you give hopp to Gambias communite to continue healing and growing to a better place on earth.`;
@@ -19,7 +19,7 @@ export const donationMessages: TDonationMessages = {
     "400",
     "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"
   ),
-  "OPTIONAL": generateDonationMessage("", "donation could cover 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
+  "OPTIONAL": generateDonationMessage("", " could be anough to cover around 4 to 10 basic school textbooks in Gambia, focusing on core subjects like math, language, and science"),
 };
 
 export const companyDonationMessages: TDonationMessages = {

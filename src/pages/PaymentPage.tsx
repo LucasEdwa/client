@@ -25,7 +25,6 @@ function PaymentPage() {
   const stripe = useStripe();
   const elements = useElements();
 
-  console.log("Payment Page State:", location.state);
 
   const locationState = location.state as LocationState;
 
@@ -124,15 +123,14 @@ function PaymentPage() {
       return;
     }
 
-    const paymentData: TStripePaymentData = {
-      paymentMethod,
-      swishNumber: (paymentMethod as "swish" | "card") === "swish" ? swishNumber : undefined,
-      paymentMethodId,
-      userId: "1",
-      ...locationState
-    };
+    // const paymentData: TStripePaymentData = {
+    //   paymentMethod,
+    //   swishNumber: (paymentMethod as "swish" | "card") === "swish" ? swishNumber : undefined,
+    //   paymentMethodId,
+    //   userId: "1",
+    //   ...locationState
+    // };
 
-    console.log(paymentData);
     // Here you would typically send the paymentData to your backend
   };
 

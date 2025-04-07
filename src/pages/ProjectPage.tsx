@@ -9,7 +9,6 @@ export const ProjectPage = () => {
         return <div>Project not found</div>;
     }
 
-    console.log(project); 
 
 
     return (
