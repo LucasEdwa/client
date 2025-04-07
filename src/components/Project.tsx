@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { ProjectsContent } from "../constants/contents";
 import { styles } from "../constants/styles";
 
-export const Projects = () => {
+export const Project = () => {
     return (
         <div className={styles.projectsStyles.container}>
             <div className={styles.projectsStyles.wrapper}>

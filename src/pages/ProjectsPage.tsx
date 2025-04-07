@@ -1,4 +1,4 @@
-import { Projects } from "../components/Projects";
+import { Project } from "../components/Project";
 
 
 export const ProjectsPage = () => {
@@ -6,7 +6,7 @@ export const ProjectsPage = () => {
         <div className="product-page">
             <div className="container">
                
-                <Projects />
+                <Project />
             </div>
         </div>
     );
