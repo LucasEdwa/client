@@ -70,9 +70,7 @@ export default function PrivateDonationForm({
    * Automatically enables tax reduction for amounts over 10,000 KR
    */
   const handleCustomDonationAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace(/[^0-9.]/g, '');
-    
-    if ((value.match(/\./g) || []).length > 1) return;
+    const value = event.target.value.replace(/[^0-9]/g, ''); // Allow only numeric input
 
     if (value === "") {
       setCustomDonationAmount("");
@@ -83,13 +81,11 @@ export default function PrivateDonationForm({
       return;
     }
 
-    const numericValue = parseFloat(value);
-    
+    const numericValue = parseInt(value, 10); // Parse as integer instead of float
+
     if (!isNaN(numericValue)) {
-      const validatedAmount = Math.max(1, Math.min(numericValue, 1000000));
-      const formattedAmount = validatedAmount.toFixed(2);
-      
-      setCustomDonationAmount(formattedAmount);
+      const validatedAmount = Math.max(1, Math.min(numericValue, 1000000)); // Enforce min/max limits
+      setCustomDonationAmount(validatedAmount.toString()); // Store as a plain number string
       setFormData({
         ...formData,
         donationAmount: validatedAmount,
@@ -245,13 +241,16 @@ export default function PrivateDonationForm({
   }, []);
 
   /**
-   * Formats numeric input values to 2 decimal places
+   * Formats numeric input value with dots every three digits
+   * @param value - The string to format
    */
   const formatInputValue = useCallback((value: string): string => {
     if (!value) return '';
-    const numericValue = parseFloat(value);
+    const numericValue = parseInt(value.replace(/\D/g, ''), 10); // Remove non-numeric characters
     if (isNaN(numericValue)) return '';
-    return numericValue.toFixed(2);
+    
+    // Format the number with dots every three digits
+    return numericValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }, []);
 
   // Memoized UI elements
@@ -315,7 +314,7 @@ export default function PrivateDonationForm({
                     type="text"
                     placeholder="Enter optional amount"
                     onChange={handleCustomDonationAmountChange}
-                    value={formatInputValue(customDonationAmount)}
+                    value={formatInputValue(customDonationAmount)} // Use plain number string
                   />
                 </div>
               )}

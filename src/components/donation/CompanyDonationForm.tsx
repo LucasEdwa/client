@@ -18,7 +18,6 @@ import { companyDonationMessages } from "../../constants/donationMessages";
 import CompanyDonationAmountOptions from "../../hooks/CompanyDonationAmountOptions";
 
 // Validation patterns for form fields
-const PHONE_PATTERN = /^\d{8,15}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const REG_NUMBER_PATTERN = /^\d{6}-\d{4}$/;
 
@@ -29,7 +28,7 @@ export default function CompanyDonationForm({
   formData: TCompanyDonationFormData;
   setFormData: React.Dispatch<React.SetStateAction<TCompanyDonationFormData>>;
 }) {
-  const [signatureType, setSignatureType] = useState("ge-en-gava");
+  const [signatureType, setSignatureType] = useState("gift-donation");
   const [donationAmount, setDonationAmount] = useState("10000 KR");
   const [customDonationAmount, setCustomDonationAmount] = useState("");
   const [formErrors, setFormErrors] = useState<TFormErrors>({});
@@ -45,78 +44,50 @@ export default function CompanyDonationForm({
 
   /**
    * Handles input changes for all form fields
-   * Includes special handling for mobile number to enforce max length
    */
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const sanitizedValue = sanitizeInput(value);
 
-    // Special handling for mobile number to enforce max length
-    if (name === 'companyMobileNumber') {
-      const numericValue = sanitizedValue.replace(/[^0-9]/g, '');
-      if (numericValue.length > 15) return;
-    }
-
-    // Special handling for organization number format
-    if (name === 'companyRegistrationNumber') {
-      const numericValue = sanitizedValue.replace(/[^0-9]/g, '');
-      if (numericValue.length > 10) return;
-      
-      // Format as xxxxxx-xxxx
-      if (numericValue.length >= 6 && numericValue.length <= 10) {
-        const formattedValue = `${numericValue.slice(0, 6)}-${numericValue.slice(6)}`;
-        setFormData(prev => ({
-          ...prev,
-          [name]: formattedValue,
-        }));
-        return;
-      }
-    }
-
-    setFormData(prev => ({
-      ...prev,
+    setFormData({
+      ...formData,
       [name]: sanitizedValue,
-    }));
-  }, [sanitizeInput, setFormData]);
+    });
+  }, [sanitizeInput, setFormData, formData]);
 
   /**
    * Handles custom donation amount input
-   * Validates and formats the amount, enforcing min/max limits
    */
   const handleCustomDonationAmountChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace(/[^0-9.]/g, '');
-    
-    if ((value.match(/\./g) || []).length > 1) return;
+    const value = event.target.value.replace(/[^0-9]/g, '');
 
     if (value === "") {
       setCustomDonationAmount("");
-      setFormData(prev => ({
-        ...prev,
-        donationAmount: 0
-      }));
+      setFormData({
+        ...formData,
+        donationAmount: 0,
+      });
       return;
     }
 
-    const numericValue = parseFloat(value);
-    
+    const numericValue = parseInt(value, 10);
+
     if (!isNaN(numericValue)) {
       const validatedAmount = Math.max(1, Math.min(numericValue, 1000000));
-      const formattedAmount = validatedAmount.toFixed(2);
-      
-      setCustomDonationAmount(formattedAmount);
-      setFormData(prev => ({
-        ...prev,
-        donationAmount: validatedAmount
-      }));
+      setCustomDonationAmount(validatedAmount.toString());
+      setFormData({
+        ...formData,
+        donationAmount: validatedAmount,
+      });
     }
-  }, [setFormData]);
+  }, [setFormData, formData]);
 
   /**
-   * Validates all form fields according to business rules
+   * Validates all form fields
    */
   const validateCompanyForm = useCallback((): TFormErrors => {
     const errors: TFormErrors = {};
-    
+
     // Organization number validation
     if (!formData.companyRegistrationNumber) {
       errors.companyRegistrationNumber = "Organization number is required";
@@ -131,24 +102,9 @@ export default function CompanyDonationForm({
       errors.companyEmail = "Invalid email format";
     }
 
-    // Name validations with max length
-    if (!formData.companyFirstName) {
-      errors.companyFirstName = "First name is required";
-    } else if (formData.companyFirstName.length > 50) {
-      errors.companyFirstName = "First name is too long (max 50 characters)";
-    }
-
-    if (!formData.companyLastName) {
-      errors.companyLastName = "Last name is required";
-    } else if (formData.companyLastName.length > 50) {
-      errors.companyLastName = "Last name is too long (max 50 characters)";
-    }
-
-    // Mobile number validation
-    if (!formData.companyMobileNumber) {
-      errors.companyMobileNumber = "Mobile number is required";
-    } else if (!PHONE_PATTERN.test(formData.companyMobileNumber)) {
-      errors.companyMobileNumber = "Invalid mobile number format (8-15 digits)";
+    // Contact person name validation
+    if (!formData.companyFirstName || !formData.companyLastName) {
+      errors.contactPerson = "Contact person name is required";
     }
 
     return errors;
@@ -156,18 +112,17 @@ export default function CompanyDonationForm({
 
   /**
    * Handles form submission
-   * Validates form data, processes donation amount, and navigates to payment
    */
   const handleFormSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     if (isSubmitting) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const errors = validateCompanyForm();
-      
+
       if (Object.keys(errors).length > 0) {
         setFormErrors(errors);
         return;
@@ -181,7 +136,7 @@ export default function CompanyDonationForm({
       if (isNaN(numericDonationAmount) || numericDonationAmount <= 0) {
         setFormErrors(prev => ({
           ...prev,
-          donationAmount: "Please enter a valid donation amount greater than 0"
+          donationAmount: "Please enter a valid donation amount greater than 0",
         }));
         return;
       }
@@ -191,9 +146,6 @@ export default function CompanyDonationForm({
         donationAmount: numericDonationAmount,
         signatureType,
         donationType: "company",
-        email: formData.companyEmail,
-        fullName: `${formData.companyFirstName.trim()} ${formData.companyLastName.trim()}`,
-        mobileNumber: formData.companyMobileNumber
       };
 
       const sanitizedFormData = {
@@ -201,15 +153,14 @@ export default function CompanyDonationForm({
         companyEmail: sanitizeInput(formDataToSubmit.companyEmail),
         companyFirstName: sanitizeInput(formDataToSubmit.companyFirstName),
         companyLastName: sanitizeInput(formDataToSubmit.companyLastName),
-        companyMobileNumber: sanitizeInput(formDataToSubmit.companyMobileNumber),
-        companyRegistrationNumber: sanitizeInput(formDataToSubmit.companyRegistrationNumber)
+        companyRegistrationNumber: sanitizeInput(formDataToSubmit.companyRegistrationNumber),
       };
 
       navigate("/payment", { state: sanitizedFormData });
     } catch (error) {
       setFormErrors(prev => ({
         ...prev,
-        submission: "An error occurred while submitting the form. Please try again."
+        submission: "An error occurred while submitting the form. Please try again.",
       }));
       console.error("Form submission error:", error);
     } finally {
@@ -226,58 +177,41 @@ export default function CompanyDonationForm({
 
   /**
    * Handles donation amount selection
-   * Resets custom amount when switching to optional amount
    */
   const handleDonationAmountClick = useCallback((amount: string) => {
     setDonationAmount(amount);
     if (amount === "OPTIONAL") {
       setCustomDonationAmount("");
-      setFormData(prev => ({
-        ...prev,
-        donationAmount: 0
-      }));
     }
-  }, [setFormData]);
-
-  /**
-   * Formats numeric input values to 2 decimal places
-   */
-  const formatInputValue = useCallback((value: string): string => {
-    if (!value) return '';
-    const numericValue = parseFloat(value);
-    if (isNaN(numericValue)) return '';
-    return numericValue.toFixed(2);
   }, []);
-
 
   // Memoized UI elements
   const submitButtonContent = useMemo(() => (
     isSubmitting ? 'Submitting...' : (
       <span className="flex items-center gap-2">
         <FontAwesomeIcon icon={faHeart} />
-        <span>To Payment ({donationAmount})</span>
+        <span>Payment</span>
       </span>
     )
-  ), [isSubmitting, donationAmount]);
+  ), [isSubmitting]);
 
   return (
     <div className={styles.companyDonationForm.formWrapper}>
       <form
         onSubmit={handleFormSubmit}
         className={styles.companyDonationForm.formContainer}
-        role="form"
       >
         <div className={styles.companyDonationForm.formContent}>
           <div className={styles.companyDonationForm.buttonContainer}>
             <input
               type="button"
               className={`${styles.companyDonationForm.button} ${
-                signatureType === "ge-en-gava"
+                signatureType === "gift-donation"
                   ? styles.companyDonationForm.activeButton
                   : "bg-transparent"
               }`}
-              value="Gift"
-              onClick={() => handleButtonClick("ge-en-gava")}
+              value="Gift Donation"
+              onClick={() => handleButtonClick("gift-donation")}
             />
           </div>
           <CompanyDonationAmountOptions
@@ -294,99 +228,65 @@ export default function CompanyDonationForm({
                   <input
                     className={styles.companyDonationForm.customDonationInput}
                     type="text"
-                    placeholder="type your donation amount"
+                    placeholder="Enter optional amount"
                     onChange={handleCustomDonationAmountChange}
-                    value={formatInputValue(customDonationAmount)}
+                    value={customDonationAmount}
                   />
-                 
                 </div>
               )}
             </div>
           )}
-          <div className={styles.companyDonationForm.organizationNumberWrapper}>
-            <div className={styles.companyDonationForm.organizationNumberInputContainer}>
-              <input
-                type="text"
-                name="companyRegistrationNumber"
-                placeholder="xxxxxx-xxxx (Organization Number)"
-                required
-                onChange={handleInputChange}
-                maxLength={11}
-                className={styles.companyDonationForm.inputField}
-              />
-            </div>
-          </div>
-          <div className={styles.companyDonationForm.inputHolder}>
-            <input
-              type="email"
-              name="companyEmail"
-              required
-              onChange={handleInputChange}
-              placeholder="company@example.com (Company Email)"
-              className={styles.companyDonationForm.inputField}
-            />
-          </div>
-          <div className={styles.companyDonationForm.contactPersonWrapper}>
-            <label className={styles.companyDonationForm.contactPersonLabel}>
-              Person to contact
-            </label>
-            <p className={styles.companyDonationForm.contactPersonDescription}>
-              Your contact information in case we need to reach you regarding
-              your order.
+          <input
+            type="text"
+            name="companyFirstName"
+            placeholder="Contact Person First Name"
+            required
+            value={formData.companyFirstName}
+            onChange={handleInputChange}
+            className={styles.companyDonationForm.inputField}
+          />
+          <input
+            type="text"
+            name="companyLastName"
+            placeholder="Contact Person Last Name"
+            required
+            value={formData.companyLastName}
+            onChange={handleInputChange}
+            className={styles.companyDonationForm.inputField}
+          />
+          <input
+            type="email"
+            name="companyEmail"
+            placeholder="Company Email"
+            required
+            value={formData.companyEmail}
+            onChange={handleInputChange}
+            className={styles.companyDonationForm.inputField}
+          />
+          <input
+            type="text"
+            name="companyRegistrationNumber"
+            placeholder="Organization Number (xxxxxx-xxxx)"
+            required
+            value={formData.companyRegistrationNumber}
+            onChange={handleInputChange}
+            className={styles.companyDonationForm.inputField}
+          />
+          {Object.entries(formErrors).map(([key, error]) => (
+            <p key={key} className={styles.companyDonationForm.errorMessage}>
+              {error}
             </p>
-          </div>
-          <div className={styles.companyDonationForm.contactInfoWrapper}>
-            <div className={styles.companyDonationForm.inputHolder}>
-              <input
-                type="text"
-                name="companyFirstName"
-                required
-                onChange={handleInputChange}
-                placeholder="First Name"
-                maxLength={50}
-                className={styles.companyDonationForm.inputField}
-              />
-            </div>
-            <div className={styles.companyDonationForm.inputHolder}>
-              <input
-                type="text"
-                name="companyLastName"
-                required
-                onChange={handleInputChange}
-                placeholder="Last Name"
-                maxLength={50}
-                className={styles.companyDonationForm.inputField}
-              />
-            </div>
-            <div className={styles.companyDonationForm.inputHolder}>
-              <input
-                type="number"
-                name="companyMobileNumber"
-                required
-                onChange={handleInputChange}
-                placeholder="Mobile Number"
-                maxLength={15}
-                className={styles.companyDonationForm.inputField}
-              />
-            </div>
-          </div>
-          <div className={styles.companyDonationForm.errorContainer}>
-            {Object.entries(formErrors).map(([key, error]) => (
-              <p key={key} className={styles.companyDonationForm.errorMessage}>
-                {error}
-              </p>
-            ))}
-          </div>
-          <button
-            className={`${styles.companyDonationForm.submitButton} ${
-              isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {submitButtonContent}
-          </button>
+          ))}
         </div>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`${styles.companyDonationForm.submitButton} ${
+            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+        >
+          {submitButtonContent}
+        </button>
       </form>
     </div>
   );
