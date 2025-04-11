@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { GiftShoppingContent } from "../constants/contents";
 import { styles } from "../constants/styles";
-import { useTheme } from "../contexts/ThemeContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../redux/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "../contexts/CartContext";
@@ -11,9 +12,8 @@ export default function GiftShopping() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const totalPages = Math.ceil(GiftShoppingContent.items.length / itemsPerPage);
-  const {theme} = useTheme();
   const { addToCart } = useCart();
-
+  const { theme } = useSelector((state: RootState) => state.theme);
   const currentItems = GiftShoppingContent.items.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -40,7 +40,7 @@ export default function GiftShopping() {
               />
             </Link>
           </div>
-          </header>
+        </header>
 
         <div className="mt-8">
           <p className={styles.giftShoppingStyles.itemsCount}>
@@ -60,7 +60,7 @@ export default function GiftShopping() {
                 <h3 className={styles.giftShoppingStyles.itemTitle}>
                   {item.name}
                 </h3>
-                <p className={styles.giftShoppingStyles.itemPrice}>{item.price } {item.currency} </p>
+                <p className={styles.giftShoppingStyles.itemPrice}>{item.price} {item.currency} </p>
               </div>
               <button
                 className={`${styles.giftShoppingStyles.button} ${theme.button}`}
@@ -84,9 +84,8 @@ export default function GiftShopping() {
           {Array.from({ length: totalPages }, (_, index) => (
             <li
               key={index + 1}
-              className={`${styles.giftShoppingStyles.pageItem} ${
-                currentPage === index + 1 ? styles.giftShoppingStyles.activePage : ""
-              }`}
+              className={`${styles.giftShoppingStyles.pageItem} ${currentPage === index + 1 ? styles.giftShoppingStyles.activePage : ""
+                }`}
               onClick={() => handlePageChange(index + 1)}
             >
               {index + 1}

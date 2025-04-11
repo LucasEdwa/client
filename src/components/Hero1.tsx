@@ -1,10 +1,12 @@
 import { Link } from "react-router";
 import { HeroMain } from "../constants/contents";
 import { styles } from "../constants/styles";
-import { useTheme } from "../contexts/ThemeContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+
 
 export default function Hero1() {
-  const { theme } = useTheme();
+  const { theme } = useSelector((state: RootState) => state.theme);
   return (
     <div className={styles.hero1.container}>
       <img

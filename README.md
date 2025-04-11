@@ -1,205 +1,162 @@
-# Frontend Web application
+# 🌍 Gambia Donation Platform (Portfolio Project)
 
-#### Run project vite with :
+A demonstration web application showcasing my skills in building modern, type-safe React applications with complex state management. This is a portfolio project and not a real donation platform and is under construction.
 
-    - npm run dev
-
-## Description
-
-    - this webpage is under construction. It is based in another project I had and it main goal is the stripe payment and paymentform.
-    - I create the donation component with two forms types (Private and companyForms).
-
-## Screenshots
 ![Project Screenshot](./src/assets/donationForm.png)
 
-``` typescript
-export type TPrivateDonationFormData = {
+## 🎯 Project Purpose
+This project was created to demonstrate:
+- Advanced TypeScript implementation
+- Complex state management with Redux
+- Form handling and validation
+- Payment system integration
+- Responsive design patterns
+
+## 🚀 Quick Start
+
+```bash
+npm install
+npm run dev
+```
+
+## 🎯 Project Overview
+
+This platform enables two types of donations:
+1. **Private Donations**: For individual donors with tax reduction options
+2. **Company Donations**: For corporate donors with specific business requirements
+
+## 💻 Technical Architecture
+
+### Core Technologies
+- **React** with **TypeScript** for type-safe development
+- **Redux Toolkit** for state management
+- **Tailwind CSS** for responsive styling
+- **Stripe** for secure payment processing
+- **SweetAlert2** for enhanced user interactions
+
+### Project Structure
+```
+src/
+├── components/
+│   ├── donation/
+│   │   ├── CompanyDonationForm.tsx    # Company donation interface
+│   │   ├── PrivateDonationForm.tsx    # Private donation interface
+│   │   └── Donation.tsx               # Main donation component
+├── constants/
+│   ├── contents.ts                    # All text content
+│   ├── donationMessages.ts           # Donation-related messages
+│   └── styles.ts                     # Styling constants
+├── context/
+│   ├── ThemeContext.tsx              # Theme management
+│   └── UserContext.tsx               # User state management
+├── hooks/
+│   ├── CompanyDonationAmountOptions.tsx
+│   └── DonationAmountOptions.tsx
+├── pages/                            # Application routes
+└── types/
+    └── types.ts                      # TypeScript type definitions
+```
+
+## 🔍 Type System
+
+### Core Types
+```typescript
+// Private Donation Form Data
+type TPrivateDonationFormData = {
+  donationType: "private";
   fullName: string;
   email: string;
-  mobileNumber: string;
+  mobileNumber: number;
   checkedForTaxReduction: boolean;
-  personalNumber?: string;
-  donationAmount: number;
+  personalNumber?: number;
+  donationAmount?: number;
   signatureType: string;
 };
 
-export type TCompanyDonationFormData = {
+// Company Donation Form Data
+type TCompanyDonationFormData = {
+  donationType: "company";
   companyRegistrationNumber: string;
   companyEmail: string;
   companyFirstName: string;
   companyLastName: string;
-  companyMobileNumber: string;
+  companyMobileNumber: number;
   donationAmount: number;
   signatureType: string;
 };
 
-export type TStripePaymentData = {
+// Payment Data
+type TStripePaymentData = {
   paymentMethod: "swish" | "card";
-  swishNumber?: string;
+  swishNumber?: number;
   paymentMethodId?: string;
-  userId?: string;
+  userId?: number | string;
 } & (TPrivateDonationFormData | TCompanyDonationFormData);
 ```
 
+## 🧠 State Management
 
-![Project Screenshot](./src/assets/payment.png)
-
-
-# Gambia non-profitable organization
-
-A project inspired of the a friend who wanna collect donation from family and friends to help a small community in Gambia, called Uganda.
-
-## Frontend part
-
-- React TS APP 
-- TailwindCss
-- Responsive
-- SweetAlert2
-- Stripe Payment
-
-
-### Files Managment
-```
- src/ 
-        components/
-            donation/
-                    CompanyDonationForm.tsx
-                    Donation.tsx
-                    PrivateDonationForm.tsx
-            Footer
-            Hero1
-            Hero2
-            Navigation.tsx
-            Projects.tsx
-            User.tsx
-        constants/
-            contents.ts (To all webpage texts)
-            donationMessages.ts
-            styles.ts
-        context/ 
-            ThemeContext.tsx
-            UserContext.tsx
-        hooks/  
-            CompanyDonationAmountOptions.tsx
-            DonationAmountOptions (To PrivateDonationForm)
-        models/
-            ITheme.ts
-        pages/ 
-            About.tsx
-            AuthPage.tsx
-            Contact.tsx
-            DonationPage.tsx
-            GiftShopping.tsx
-            Home.tsx
-            Layout.tsx
-            NotFound.tsx
-            Partners.tsx
-            PaymentPage.tsx
-            ProjectPage.tsx
-            ProjectsPage.tsx
-            UserPage.tsx
-        types/
-            types.ts
-
-```
- 
-# Donation.tsx
+### Redux Implementation
+The application uses Redux for managing complex form states and donation flows:
 
 ```typescript
+// Redux Store Structure
+type DonationState = {
+  donationType: "private" | "company";
+  privateFormData: TPrivateDonationFormData;
+  companyFormData: TCompanyDonationFormData;
+};
 
-
-export default function Donation() {
-  const [state, dispatch] = useReducer(DonetionReducer, initialState);
-  const { theme } = useTheme();
-
-  const handleDonationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: DonationActionTypes.SET_DONATION_TYPE,
-      payload: { donationType: event.target.value as "private" | "company" },
-    });
-  };
-
-  const setPrivateFormData = (updatedData: Partial<TPrivateDonationFormData>) => {
-    dispatch({
-      type: DonationActionTypes.SET_PRIVATE_FORM_DATA,
-      payload: updatedData,
-    });
-  };
-
-  const setCompanyFormData = (updatedData: Partial<TCompanyDonationFormData>) => {
-    dispatch({
-      type: DonationActionTypes.SET_COMPANY_FORM_DATA,
-      payload: updatedData,
-    });
-  };
-
-  return (
-    <div className={`${styles.donation.container}`}>
-      <img src={hero1} alt="hero" className={styles.donation.image} />
-      <div className={`${styles.donation.contentContainer} ${theme.background}`}>
-        <h1 className={styles.donation.title}>{DonationContent.title}</h1>
-        <p className={styles.donation.description}>{DonationContent.description}</p>
-        <div className={styles.donation.formContainer}>
-          <div className={styles.donation.radioGroup}>
-            <h1 className="text-xs p-2">Donate as:</h1>
-            <input
-              type="radio"
-              id="private-person"
-              name="donation"
-              value="private"
-              onChange={handleDonationTypeChange}
-              checked={state.donationType === "private"}
-              className="text-xs"
-            />
-            <label htmlFor="private-person" className={styles.donation.radioLabel}>
-              Private Person
-            </label>
-            <input
-              type="radio"
-              id="company"
-              name="donation"
-              value="company"
-              onChange={handleDonationTypeChange}
-              checked={state.donationType === "company"}
-              className=""
-            />
-            <label htmlFor="company" className={styles.donation.radioLabel}>
-              Company
-            </label>
-          </div>
-          {state.donationType === "private" && (
-            <PrivateDonationForm
-              formData={state.privateFormData}
-              setFormData={(value) =>
-                typeof value === "function"
-                  ? setPrivateFormData(value(state.privateFormData))
-                  : setPrivateFormData(value)
-              } // Wrap to match expected type
-            />
-          )}
-          {state.donationType === "company" && (
-            <CompanyDonationForm
-              formData={state.companyFormData}
-              setFormData={
-                (value)=>
-                  typeof value === "function"
-                    ? setCompanyFormData(value(state.companyFormData))
-                    : setCompanyFormData(value)
-
-              } // Wrap to match expected type
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+// Form Data Updates
+const handlePrivateFormDataChange = (updatedData: React.SetStateAction<TPrivateDonationFormData>) => {
+  if (typeof updatedData === "function") {
+    dispatch(setPrivateFormData(updatedData(privateFormData)));
+  } else {
+    dispatch(setPrivateFormData(updatedData));
+  }
+};
 ```
 
-## Link to Demo
+### Key Features
+- **Dynamic Form Switching**: Seamless transition between private and company donation forms
+- **Real-time Validation**: Immediate feedback on form inputs
+- **Tax Reduction**: Special handling for private donors seeking tax benefits
+- **Payment Integration**: Secure payment processing through Stripe
+- **Theme Support**: Dark/light mode with context-based theming
 
-https://main.d1nkv9r7zy7zdb.amplifyapp.com
+## 🛠️ Development Features
 
-## TODO:
-  - Finish cart in giftShopping.
-  - Create backend and set the fetch to the data
+### Form Handling
+- Type-safe form state management
+- Dynamic validation rules
+- Custom donation amount options
+- Mobile-responsive design
+
+### Payment Processing
+- Multiple payment methods (Swish/Card)
+- Secure transaction handling
+- Payment method validation
+- Error handling and user feedback
+
+### User Experience
+- Intuitive form navigation
+- Clear error messages
+- Progress indicators
+- Responsive design
+
+## 🔜 Future Enhancements
+- [ ] Shopping cart functionality
+- [ ] Backend API integration
+- [ ] Enhanced payment processing
+- [ ] Advanced form validation
+- [ ] Unit testing suite
+- [ ] Performance optimizations
+
+## 🌐 Demo
+Check out the live demo at: [Gambia Donation Platform Demo](https://main.d1nkv9r7zy7zdb.amplifyapp.com)
+
+## 📝 Note
+This is a portfolio project created to showcase my development skills. It is not affiliated with any real organization or charity. The payment processing is simulated and no real transactions are processed.
+
+## 🤝 Contributing
+While this is a portfolio project, I welcome feedback and suggestions for improvement!

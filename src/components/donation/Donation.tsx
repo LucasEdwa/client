@@ -1,44 +1,45 @@
-import React, { useReducer } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setDonationType, setPrivateFormData, setCompanyFormData } from "../../redux/donationSlice";
 import PrivateDonationForm from "./PrivateDonationForm";
 import CompanyDonationForm from "./CompanyDonationForm";
 import hero1 from "../../assets/img_donation.jpeg";
 import { DonationContent } from "../../constants/contents";
-import { useTheme } from "../../contexts/ThemeContext";
 import { styles } from "../../constants/styles";
-import { DonetionReducer, initialState, DonationActionTypes } from "../../reducers/donationReducer";
 import { TPrivateDonationFormData, TCompanyDonationFormData } from "../../types/types";
 
 export default function Donation() {
-  const [state, dispatch] = useReducer(DonetionReducer, initialState);
-  const { theme } = useTheme();
+  const dispatch = useDispatch();
+  const { donationType, privateFormData, companyFormData } = useSelector((state: RootState) => state.donation);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const handleDonationTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: DonationActionTypes.SET_DONATION_TYPE,
-      payload: { donationType: event.target.value as "private" | "company" },
-    });
+    dispatch(setDonationType(event.target.value as "private" | "company"));
   };
 
-  const setPrivateFormData = (updatedData: Partial<TPrivateDonationFormData>) => {
-    dispatch({
-      type: DonationActionTypes.SET_PRIVATE_FORM_DATA,
-      payload: updatedData,
-    });
+  const handlePrivateFormDataChange = (updatedData: React.SetStateAction<TPrivateDonationFormData>) => {
+    if (typeof updatedData === "function") {
+      dispatch(setPrivateFormData(updatedData(privateFormData)));
+    } else {
+      dispatch(setPrivateFormData(updatedData));
+    }
   };
 
-  const setCompanyFormData = (updatedData: Partial<TCompanyDonationFormData>) => {
-    dispatch({
-      type: DonationActionTypes.SET_COMPANY_FORM_DATA,
-      payload: updatedData,
-    });
+  const handleCompanyFormDataChange = (updatedData: React.SetStateAction<TCompanyDonationFormData>) => {
+    if (typeof updatedData === "function") {
+      dispatch(setCompanyFormData(updatedData(companyFormData)));
+    } else {
+      dispatch(setCompanyFormData(updatedData));
+    }
   };
 
   return (
-    <div className={`${styles.donation.container}`}>
+    <div className={`${styles.donation.container} `}>
       <img src={hero1} alt="hero" className={styles.donation.image} />
-      <div className={`${styles.donation.contentContainer} ${theme.background}`}>
-        <h1 className={styles.donation.title}>{DonationContent.title}</h1>
-        <p className={styles.donation.description}>{DonationContent.description}</p>
+      <div className={`${styles.donation.contentContainer} ${theme.text} ${theme.background}`}>
+        <h1 className={`${styles.donation.title} ${theme.text}`}>{DonationContent.title}</h1>
+        <p className={`${styles.donation.description} ${theme.text}`}>{DonationContent.description}</p>
         <div className={styles.donation.formContainer}>
           <div className={styles.donation.radioGroup}>
             <h1 className="text-xs p-2">Donate as:</h1>
@@ -48,7 +49,7 @@ export default function Donation() {
               name="donation"
               value="private"
               onChange={handleDonationTypeChange}
-              checked={state.donationType === "private"}
+              checked={donationType === "private"}
               className="text-xs"
             />
             <label htmlFor="private-person" className={styles.donation.radioLabel}>
@@ -60,33 +61,23 @@ export default function Donation() {
               name="donation"
               value="company"
               onChange={handleDonationTypeChange}
-              checked={state.donationType === "company"}
+              checked={donationType === "company"}
               className=""
             />
             <label htmlFor="company" className={styles.donation.radioLabel}>
               Company
             </label>
           </div>
-          {state.donationType === "private" && (
+          {donationType === "private" && (
             <PrivateDonationForm
-              formData={state.privateFormData}
-              setFormData={(value) =>
-                typeof value === "function"
-                  ? setPrivateFormData(value(state.privateFormData))
-                  : setPrivateFormData(value)
-              } // Wrap to match expected type
+              formData={privateFormData}
+              setFormData={handlePrivateFormDataChange}
             />
           )}
-          {state.donationType === "company" && (
+          {donationType === "company" && (
             <CompanyDonationForm
-              formData={state.companyFormData}
-              setFormData={
-                (value)=>
-                  typeof value === "function"
-                    ? setCompanyFormData(value(state.companyFormData))
-                    : setCompanyFormData(value)
-
-              } // Wrap to match expected type
+              formData={companyFormData}
+              setFormData={handleCompanyFormDataChange}
             />
           )}
         </div>

@@ -66,9 +66,9 @@ export type TPrivateDonationFormData = {
   donationType: "private";
   fullName: string;
   email: string;
-  mobileNumber: string;
+  mobileNumber: number;
   checkedForTaxReduction: boolean;
-  personalNumber?: string;
+  personalNumber?: number;
   donationAmount?: number;
   signatureType: string;
 };
@@ -79,16 +79,16 @@ export type TCompanyDonationFormData = {
   companyEmail: string;
   companyFirstName: string;
   companyLastName: string;
-  companyMobileNumber: string;
+  companyMobileNumber: number;
   donationAmount: number;
   signatureType: string;
 };
 
 export type TStripePaymentData = {
   paymentMethod: "swish" | "card";
-  swishNumber?: string;
+  swishNumber?: number;
   paymentMethodId?: string;
-  userId?: string;
+  userId?: number|string;
 } & (TPrivateDonationFormData | TCompanyDonationFormData);
 
 export type TDonationMessages = {
@@ -100,9 +100,14 @@ export type TDonationMessageGenerator = (
   amountMessage: string
 ) => string;
 
+export type TDonationAmount = {
+  value: number | "OPTIONAL";
+  display: string;
+};
+
 export type TDonationAmountOptionsProps = {
-  donationAmount: string;
-  handleDonationAmountClick: (amount: string) => void;
+  donationAmount: TDonationAmount;
+  handleDonationAmountClick: (amount: TDonationAmount) => void;
 };
 //Donation Page
 export type TDonationContent = {
@@ -222,6 +227,30 @@ export type TUserPageContent = {
     profileImage?: string;
   };  donations: TDonation[];
 
+};
+export type TPayment = {
+  donationType: "private" | "company";
+  signatureType: string;
+  donationAmount: number;
+  paymentMethod: "swish" | "card";
+  swishNumber?: number;
+  paymentMethodId?: string;
+  userId?: string;
+  // Private donation specific fields
+  fullName?: string;
+  email?: string;
+  mobileNumber?: string;
+  personalNumber?: number;
+  checkedForTaxReduction?: boolean;
+  // Company donation specific fields
+  companyRegistrationNumber?: number;
+  companyEmail?: string;
+  companyFirstName?: string;
+  companyLastName?: string;
+  companyMobileNumber?: number;
+  // Additional fields for QR code and mobile detection
+  showQRCode?: boolean;
+  isMobile?: boolean;
 };
 
 export type TSignatureType = "become-monthly-donor" | "give-a-gift";

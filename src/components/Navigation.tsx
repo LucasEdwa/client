@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { NavbarContent } from "../constants/contents";
-import { useTheme } from '../contexts/ThemeContext';
 import { Link } from "react-router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { styles } from "../constants/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { toggleTheme } from "../redux/ThemaSlice";
 
 export function Navigation() {
+
+  const dispatch = useDispatch();
+  const { theme, currentTheme } = useSelector((state: RootState) => state.theme);
+  const handleToggleTheme = () => {
+    dispatch(toggleTheme());
+  };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openProjectDropdown, setOpenProjectDropdown] = useState<number | null>(null);
-  const { theme, toggleTheme, currentTheme } = useTheme();
 
   const handleProjectDropdownToggle = (id: number) => {
     setOpenProjectDropdown(openProjectDropdown === id ? null : id);
@@ -19,7 +26,7 @@ export function Navigation() {
     <nav className={`${styles.nav.container} ${theme.background} ${theme.text}`}>
       <div className={styles.nav.themeButtonContainer}>
         <button
-          onClick={toggleTheme}
+          onClick={handleToggleTheme}
           className={styles.nav.themeButton}
         >
           <FontAwesomeIcon icon={currentTheme === 'primary' ? faSun : faMoon} />

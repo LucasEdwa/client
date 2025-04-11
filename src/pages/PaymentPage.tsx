@@ -38,6 +38,10 @@ function PaymentPage() {
     setPaymentMethod(event.target.value as "swish" | "card");
   };
 
+  const handleSwishNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSwishNumber(event.target.value.replace(/\D/g, ""));
+  };
+
   const handleSwishPayment = () => {
     const swishData = {
       version: 1,
@@ -141,7 +145,7 @@ function PaymentPage() {
         <p className={styles.paymentStyles.summary.text}>Donation as: {locationState.donationType}</p>
         <p className={styles.paymentStyles.summary.text}>Signature as: {locationState.signatureType}</p>
         <p className={styles.paymentStyles.summary.text}>Donation Amount: {locationState.donationAmount} kr</p>
-        
+
         {isPrivateDonation(locationState) && (
           <div className={styles.paymentStyles.summary.privateInfo}>
             <p className={styles.paymentStyles.summary.text}>Fullname: {locationState.fullName}</p>
@@ -201,11 +205,11 @@ function PaymentPage() {
         {paymentMethod === "swish" && (
           <div className={styles.paymentStyles.form.cardContainer}>
             <input
-              type="text"
+              type="number"
               placeholder="Phone number (+46) 723451234"
               className={styles.paymentStyles.form.swishInput}
               value={swishNumber}
-              onChange={(e) => setSwishNumber(e.target.value)}
+              onChange={handleSwishNumberChange}
               pattern="[0-9+()-\s]*"
             />
             {showQRCode && (
@@ -239,7 +243,7 @@ function PaymentPage() {
         )}
 
         <button type="submit" className={styles.paymentStyles.form.button}>
-          Pay {locationState.donationAmount} KR
+          Pay {locationState.donationAmount}
         </button>
       </form>
     </div>
