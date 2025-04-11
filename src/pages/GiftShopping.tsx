@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GiftShoppingContent } from "../constants/contents";
 import { styles } from "../constants/styles";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";

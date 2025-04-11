@@ -4,7 +4,7 @@ import { RootState } from "./store";
 
 interface PaymentState {
   paymentData: TPayment;
-  swishNumber: string;
+  swishNumber: number;
   showQRCode: boolean;
 }
 
@@ -14,10 +14,10 @@ const initialState: PaymentState = {
     signatureType: "",
     donationAmount: 0,
     paymentMethod: "swish",
-    swishNumber: "",
+    swishNumber: 0,
     showQRCode: false,
   },
-  swishNumber: "",
+  swishNumber: 0,
   showQRCode: false,
 };
 
@@ -28,7 +28,7 @@ const paymentSlice = createSlice({
     setPaymentData: (state, action: PayloadAction<TPayment>) => {
       state.paymentData = action.payload;
     },
-    setSwishNumber: (state, action: PayloadAction<string>) => {
+    setSwishNumber: (state, action: PayloadAction<number>) => {
       state.swishNumber = action.payload;
     },
     setShowQRCode: (state, action: PayloadAction<boolean>) => {

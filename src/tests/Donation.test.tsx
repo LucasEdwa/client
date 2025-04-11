@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Donation from '../components/donation/Donation';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { useNavigate } from 'react-router';
 import { BrowserRouter } from 'react-router';
 
@@ -28,9 +27,7 @@ describe('Donation Component', () => {
   const renderDonation = () => {
     return render(
       <BrowserRouter>
-        <ThemeProvider>
           <Donation />
-        </ThemeProvider>
       </BrowserRouter>
     );
   };
